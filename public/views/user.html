@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                用户管理
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                            账号: <input type="text" ng-model="filter.username" style="width: 100px;"/> &nbsp;
+                            用户等级: <select name="" ng-model="filter.status">
+                            <option value="">全部</option>
+                            <option value="0">禁用</option>
+                            <option value="1">普通</option>
+                        </select> &nbsp;
+                            <button class="btn btn-success btn-xs" ng-click="query()">查询</button>
+                        </p>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>手机号</th>
+                        <th>余额(冻结)/积分</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="d in data">
+                        <td>
+                            <p>
+                                {{d.get('username')}}
+                            </p>
+                            <p>
+                                创建时间:{{d.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}
+                            </p>
+                            <p>
+                                email:{{d.get('email')?d.get('email'): '暂无'}}({{d.get('emailVerified')?'已验证':'未验证'}})
+                            </p>
+                        </td>
+                        <td>{{d.get('mobilePhoneNumber')}}({{d.get('mobilePhoneVerified')?'已验证':'未验证'}})</td>
+                        <td>{{d.get('money')}}元({{d.get('freezeMoney')}}元)/{{d.get('point')}}点</td>
+                        <td>
+                            <button class="btn btn-danger btn-xs" ng-click="editMoney(d)">修改余额</button>
+                            <!--<button class="btn btn-danger btn-xs" ng-click="del(d)">禁用</button>-->
+                        </td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li ng-if="page != 1 && totalPage != 1"><a ng-click="changePage(page-1)" href="javascript:;;;">«</a></li>
+                        <li ng-repeat="t in totalPage"><a href="javascript:;;;" ng-click="changePage(t)">{{t}}</a></li>
+                        <li ng-if="page != totalPage && totalPage != 1"><a ng-click="changePage(page+1)" href="javascript:;;;">»</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

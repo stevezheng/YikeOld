@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                产品管理
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                            ID: <input type="text" ng-model="filter.objectId" style="width: 50px;"/> &nbsp;
+                            <button class="btn btn-success btn-xs" ng-click="query()">查询</button>
+
+                            <button class="btn btn-info btn-xs pull-right" ng-click="openModal('#btn-modal-add')">新增商家</button>
+                        </p>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>商家id</th>
+                        <th>商家名称</th>
+                        <th>商家别名</th>
+                        <th>商家关键词</th>
+                        <th>商家描述</th>
+                        <th>上级商家</th>
+                        <th>商家排序</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="d in data">
+                        <td>{{d.id}}</td>
+                        <td>{{d.get('name')}}</td>
+                        <td>{{d.get('title')}}</td>
+                        <td>{{d.get('keywords')}}</td>
+                        <td>{{d.get('description')}}</td>
+                        <td>{{d.get('parentId')}}</td>
+                        <td>{{d.get('sort')}}</td>
+                        <td>{{d.createdAt | date: 'yyyy-mm-dd'}}</td>
+                        <td><button class="btn btn-danger btn-xs" ng-click="del(d)">删除</button></td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li><a ng-click="changePage(page-1)" href="javascript:;;;">«</a></li>
+                        <li ng-repeat="t in totalPage"><a href="javascript:;;;" ng-click="changePage(t)">{{t}}</a></li>
+                        <li><a ng-click="changePage(page+1)" href="javascript:;;;">»</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<a id="btn-modal-add" href="#modal-add" data-toggle="modal" style="display: none;">新增</a>
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="add" role="dialog" tabindex="-1" id="modal-add" class="modal fade" ng-controller="ShopAddCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增商家</h4>
+            </div>
+            <form class="modal-body form-horizontal cmxform tasi-form">
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家名称</label>
+                    <div class="col-lg-4"><input ng-model="item.name" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家类别id</label>
+                    <div class="col-lg-4"><input ng-model="item.categoryId" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家类别</label>
+                    <div class="col-lg-4"><input ng-model="item.categoryName" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家别名</label>
+                    <div class="col-lg-4"><input ng-model="item.title" type="text" class="form-control valid" placeholder="可为空"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家关键词</label>
+                    <div class="col-lg-4"><input type="text" class="form-control valid" ng-model="item.keywords"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家描述</label>
+                    <div class="col-lg-4"><input type="text" class="form-control valid" ng-model="item.description"/></div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button" id="btn-cancel">取消 </button>
+                <button class="btn btn-info" type="button" id="btn-confirm" data-data="add" ng-click="submit()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->

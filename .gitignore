@@ -1,0 +1,6 @@
+.avoscloud/
+node_modules
+
+# VIM
+*~
+*.swp

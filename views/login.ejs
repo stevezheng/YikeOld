@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/owl.carousel.css" type="text/css">
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<form class="form-signin" action="/admin/login" method="post">
+    <h2 class="form-signin-heading">登陆后台管理系统</h2>
+    <div class="login-wrap">
+        <input type="text" class="form-control" placeholder="管理员账号" autofocus="" name="username" id="username">
+        <input type="password" class="form-control" placeholder="密码" name="password" id="password">
+        <button class="btn btn-lg btn-login btn-block" type="submit">登陆</button>
+        <% if (error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+    </div>
+</form>
+</body>
+</html>

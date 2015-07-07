@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-lg-4">
+            <button class="btn btn-info uploadButton" ng-click="browseFile()">
+                <i class="icon ion-image"></i>上传图片
+            </button>
+    </div>
+    <div class="col-lg-3">
+        <a ng-show="item.image.length > 5" href="{{item.image}}" target="_blank">[查看图片]</a>
+        <img alt="" id="shadowImage"/>
+        <input type="file" id="browseBtn" style="display: none;">
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                产品管理
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                            ID: <input type="text" ng-model="filter.objectId" style="width: 50px;"/> &nbsp;
+                            <button class="btn btn-success btn-xs" ng-click="query()">查询</button>
+
+                            <button class="btn btn-info btn-xs pull-right" ng-click="openModal('#btn-modal-add')">新增产品</button>
+                        </p>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>产品id</th>
+                        <th>产品名称</th>
+                        <th>产品价格</th>
+                        <th>产品图片</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="d in data">
+                        <td>{{d.id}}</td>
+                        <td>{{d.get('name')}}</td>
+                        <td>{{d.get('price')}}</td>
+                        <td><a href="{{d.get('image')}}" target="_blank"><img ng-src="{{d.get('image')}}" style="width: 50px;" alt=""/></a></td>
+                        <td>{{d.createdAt | date: 'yyyy-mm-dd'}}</td>
+                        <td><button class="btn btn-danger btn-xs" ng-click="del(d)">删除</button></td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li><a ng-click="changePage(page-1)" href="javascript:;;;">«</a></li>
+                        <li ng-repeat="t in totalPage"><a href="javascript:;;;" ng-click="changePage(t)">{{t}}</a></li>
+                        <li><a ng-click="changePage(page+1)" href="javascript:;;;">»</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<a id="btn-modal-add" href="#modal-add" data-toggle="modal" style="display: none;">新增</a>
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="add" role="dialog" tabindex="-1" id="modal-add" class="modal fade" ng-controller="ItemAddCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增产品</h4>
+            </div>
+            <form class="modal-body form-horizontal cmxform tasi-form">
+                <div class="form-group">
+                    <label class="control-label col-lg-3">产品名称</label>
+                    <div class="col-lg-4"><input ng-model="item.name" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">产品价格</label>
+                    <div class="col-lg-4"><input type="text" class="form-control valid" ng-model="item.price"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">产品图片</label>
+                    <utils-upload></utils-upload>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">品牌名称</label>
+                    <div class="col-lg-4"><input ng-model="item.bandName" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家id</label>
+                    <div class="col-lg-4"><input ng-model="item.shopId" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">商家名称</label>
+                    <div class="col-lg-4"><input ng-model="item.shopName" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">分类id</label>
+                    <div class="col-lg-4"><input ng-model="item.categoryId" type="text" class="form-control valid" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3">分类名称</label>
+                    <div class="col-lg-4"><input ng-model="item.categoryName" type="text" class="form-control valid" /></div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button" id="btn-cancel">取消 </button>
+                <button class="btn btn-info" type="button" id="btn-confirm" data-data="add" ng-click="submit()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
