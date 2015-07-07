@@ -19,6 +19,8 @@
     $scope.openModal = openModal;
     $scope.del = del;
     $scope.query = query;
+    $scope.edit = edit;
+    $scope.currentShop = null;
 
     init();
 
@@ -68,6 +70,12 @@
         }, function (err) {
           window.alert('删除失败');
         });
+    }
+
+    function edit(shop) {
+      openModal('#btn-modal-edit');
+      $scope.currentShop = shop;
+      console.log($scope.currentShop);
     }
   }
 })();
