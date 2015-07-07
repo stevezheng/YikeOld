@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-  res.render(baseAPP + '/login', {error: false});
+  res.render('login', {error: false});
 });
 
 router.post('/login', function(req, res, next) {
