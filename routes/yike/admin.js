@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var AV = require('leanengine');
+var D = require('yi-lean-orm');
 var baseAPP = 'yike';
+var db = require('../../install/db');
 
 router.get('/', function(req, res, next) {
   var APP_ID = process.env.LC_APP_ID;
@@ -47,6 +49,24 @@ router.get('/logout', function(req, res) {
   //avosExpressCookieSession将自动清除登录cookie信息
   AV.User.logOut();
   res.redirect('/admin/login');
+});
+
+router.get('/install', function(req, res) {
+  var type = req.query.type;
+  var origin = db[type];
+  if (type == 'Shop') {
+    origin.name = '' + (+new Date());
+  }
+
+  return D(type)
+    .add(origin)
+    .then(function(data) {
+      return res.send(data);
+    })
+    .catch(function(err) {
+      console.error(err);
+      return res.send(err);
+    })
 });
 
 module.exports = router;
