@@ -29,6 +29,9 @@ switch (APP_ID) {
   case 'ry3vkr5qo327u3zxk62ifezixglq2lqfmutkthm0c050z9j9':
     var YikeAdmin = require('./routes/yike/admin');
 
+    app.get('/', function(req, res) {
+      res.send('ok');
+    });
     app.use('/admin', YikeAdmin);
     break;
 }
