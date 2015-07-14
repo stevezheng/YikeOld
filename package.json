@@ -31,5 +31,13 @@
     "wechat-pay": "^0.2.0",
     "xml2js": "^0.4.9",
     "yi-lean-orm": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "del": "^1.1.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-rename": "^1.2.0",
+    "run-sequence": "^1.0.2"
   }
 }
