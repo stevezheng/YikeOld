@@ -1,6 +1,9 @@
 module.exports = {
   Shop: {
     description: '' //店铺描述
+    , image: 'http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg' //默认店铺图片
+    , images: ['http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg',
+      'http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg'] //店铺图片
     , address: '双流县高新区老成仁路姐儿艳站苏南竹岛酒店楼下'
     , city: '成都'
     , area: '高新区'
@@ -10,18 +13,17 @@ module.exports = {
     , categoryId: '559a156ae4b0001a92d9433a'
     , categoryName: '美食'
     , keywords: ['好吃', '便宜', '服务态度好']
-    , title: ''
     , tel: '028-99653653'
-    , image: ''
     , price: 0
     , sort: 255
     , comments: '' //评价
+    , position: GeoPoint({latitude: 40.0, longitude: -30.0}) //店铺地址
   },
   Item: {
     saleNum: 0 //销量
     , commentStar: 5 //评分
     , commentCount: 0 //评论数
-    , comments: '' //评价
+    , comments: [] //评价
     , originPrice: 0
     , marketPrice: 0
     , price: 199 //价格
@@ -43,7 +45,10 @@ module.exports = {
     , image: 'http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg' //默认商品图片
     , images: ['http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg',
       'http://ac-ry3vkr5q.clouddn.com/0hURloywo0W7Kls4dizIW8voMwzFTsOPm0PoQxtj.jpg'] //商品图片
-    , transportId: '' // 运费模板
+    , transportId: '' // 运费模板,
+    , overtime: new Date('2015-07-15 10:00:00') //剩余时间
+    , overtimeBack: true //支持过期退
+    , anytimeBack: true //支持随时退
   },
   Address: {
     isDefault: 0 //是否是默认地址
