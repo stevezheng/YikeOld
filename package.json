@@ -23,6 +23,7 @@
     "express": "^4.12.3",
     "express-session": "^1.11.3",
     "leanengine": "^0.1.0",
+    "mootools": "^1.5.1",
     "underscore": "^1.7.0",
     "wechat": "^2.0.0",
     "wechat-api": "^1.9.1",
