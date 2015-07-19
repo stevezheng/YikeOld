@@ -1,6 +1,9 @@
 var models = require('../lib/models');
 var router = require('express').Router();
 var async = require('async');
+var require_login = require('../lib/utils').require_login;
+var require_admin = require('../lib/utils').require_admin;
+var require_role = require('../lib/utils').require_role;
 
 var send_json_response = function(res, err, data) {
   if (err) {
@@ -26,7 +29,7 @@ router.get('/categories/?', function(req, res) {
   });
 });
 
-router.post('/categories/?', function(req, res) {
+router.post('/categories/?', require_admin(), function(req, res) {
   var categoryName = req.body.name;
   async.waterfall([
       function(next) {
@@ -49,7 +52,7 @@ router.get('/categories/:categoryId/?', function(req, res) {
   })
 });
 
-router.delete('/categories/:categoryId/?', function(req, res) {
+router.delete('/categories/:categoryId/?', require_admin(), function(req, res) {
   models.Category.findById(req.params.categoryId, function(err, category) {
     if (err) return send_json_response(res);
     category.destory(function(err) {
@@ -76,7 +79,7 @@ router.get('/configs/:key/?', function(req, res) {
   });
 });
 
-router.post('/configs/:key/?', function(req, res) {
+router.post('/configs/:key/?', require_admin(), function(req, res) {
   var key = req.params.key;
   var value = req.body.value;
   Config.set(key, value, function(err, conf) {
@@ -86,7 +89,7 @@ router.post('/configs/:key/?', function(req, res) {
 // end configs;
 
 //start user
-router.get('/users/?', function(req, res) {
+router.get('/users/?', require_admin(), function(req, res) {
   var qs = req.query;
   var max = Number(qs.max) || Number.MAX_VALUE;
   var limit = Number(qs.limit) || 10;
