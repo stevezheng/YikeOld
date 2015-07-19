@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var user = require('./routes/user');
+var api = require('./routes/api');
 var cloud = require('./cloud');
 var AV = require('leanengine');
 
@@ -37,6 +38,7 @@ switch (APP_ID) {
 }
 
 app.use('/admin/user', user);
+app.use('/api', api);
 
 
 // 如果任何路由都没匹配到，则认为 404

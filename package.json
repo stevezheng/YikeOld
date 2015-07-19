@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "MD5": "^1.2.2",
+    "async": "^1.3.0",
     "body-parser": "1.12.3",
     "cookie-parser": "^1.3.5",
     "debug": "^2.2.0",
@@ -30,5 +31,13 @@
     "wechat-pay": "^0.2.0",
     "xml2js": "^0.4.9",
     "yi-lean-orm": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "del": "^1.1.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-rename": "^1.2.0",
+    "run-sequence": "^1.0.2"
   }
 }
