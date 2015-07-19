@@ -1,3 +1,4 @@
+var AV = require('leanengine');
 module.exports = {
   Shop: {
     description: '' //店铺描述
@@ -17,7 +18,7 @@ module.exports = {
     , price: 0
     , sort: 255
     , comments: '' //评价
-    , position: GeoPoint({latitude: 40.0, longitude: -30.0}) //店铺地址
+    , position: new AV.GeoPoint({latitude: 40.0, longitude: -30.0}) //店铺地址
   },
   Item: {
     saleNum: 0 //销量
