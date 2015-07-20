@@ -4,6 +4,7 @@ var async = require('async');
 var require_login = require('../lib/utils').require_login;
 var require_admin = require('../lib/utils').require_admin;
 var require_role = require('../lib/utils').require_role;
+var _ = require('underscore');
 
 var send_json_response = function(res, err, data) {
   if (err) {
@@ -117,6 +118,34 @@ router.get('/shops/?', function(req, res) {
     if (err) return send_json_response(res, err);
     models.Shop.fillObjects(shops, function(err, shops) {
       send_json_response(res, err, {shops: shops});
+    });
+  });
+});
+
+router.post('/shops/?', require_admin(), function(req, res) {
+  var data = req.body;
+  var shop = new models.Shop(data);
+  shop.save(function(err, shop) {
+    send_json_response(res, err, {shop: shop.toJSON()});
+  });
+});
+
+router.get('/shops/:shopId/?', function(req, res) {
+  var shopId = req.params.shopId;
+  models.Shop.findById(shopId, function(err, shop) {
+    models.fillObjects(shop, function(err, shop) {
+      send_json_response(res, err, {shop: shop[0]});
+    });
+  });
+});
+
+router.post('/shops/:shopId/?', require_admin(), function(req, res) {
+  var data = req.body;
+  var shopId = req.params.shopId;
+  models.Shop.findById(shopId, function(err, shop) {
+    shop = _.extend(shop, data);
+    shop.save(function(err, shop) {
+      send_json_response(res, err, {shop: shop.toJSON()});
     });
   });
 });
