@@ -150,4 +150,52 @@ router.post('/shops/:shopId/?', require_admin(), function(req, res) {
   });
 });
 //end shop
+
+// start shop comment
+router.get('/shops/:shopId/comments/?', function(req, res) {
+  var shopId = req.params.shopId;
+  var qs = req.query;
+  var max = Number(qs.max) || Number.MAX_VALUE;
+  var limit = Number(qs.limit) || 10;
+  if (limit > 100) {
+    limit = 100;
+  }
+  models.ShopComment.find({objectId_$lt: max, shopId: shopId}, {limit: limit}, function(err, comments) {
+    if (err) return send_json_response(res, err);
+    models.ShopComment.fillObjects(comments, function(err, comments) {
+      send_json_response(res, err, {comments: comments});
+    });
+  });
+});
+
+router.post('/shops/:shopId/comments/?', require_login(), function(req, res) {
+  var data = req.body;
+  var shopId = req.params.shopId;
+  var comment = new models.ShopComment(data);
+  comment.shopId = shopId;
+  comment.save(function(err, comment) {
+    send_json_response(res, err, {comment: comment.toJSON()});
+  });
+});
+
+router.get('/shops/:shopId/comments/:commentId/?', function(req, res) {
+  var commentId = req.params.commentId;
+  models.ShopComment.findById(commentId, function(err, comment) {
+    models.fillObjects(comment, function(err, comment) {
+      send_json_response(res, err, {comment: comment[0]});
+    });
+  });
+});
+
+router.post('/shops/:shopId/comments/:commentId/?', require_login(), function(req, res) {
+  var data = req.body;
+  var commentId = req.params.commentId;
+  models.ShopComment.findById(commentId, function(err, comment) {
+    comment = _.extend(comment, data);
+    comment.save(function(err, comment) {
+      send_json_response(res, err, {comment: comment.toJSON()});
+    });
+  });
+});
+// end shop comment
 module.exports = router;
