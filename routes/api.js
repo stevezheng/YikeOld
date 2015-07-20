@@ -318,6 +318,9 @@ router.post('/addrs/?', require_login(), function(req, res) {
 
 router.get('/addrs/:addrId/?', require_login(), function(req, res) {
   models.Address.findById(req.params.addrId, function(err, addr) {
+    if (addr.userId !== req.user.id && !req.admin) {
+      return res.send(400, 'Permission denied!');
+    }
     send_json_response(res, err, {addr: addr.toJSON()});
   })
 });
@@ -325,6 +328,9 @@ router.get('/addrs/:addrId/?', require_login(), function(req, res) {
 router.delete('/addrs/:addrId/?', require_login(), function(req, res) {
   models.Address.findById(req.params.addrId, function(err, addr) {
     if (err) return send_json_response(res, err);
+    if (addr.userId !== req.user.id && !req.admin) {
+      return res.send(400, 'Permission denied!');
+    }
     addr.destory(function(err) {
       send_json_response(res, err);
     });
