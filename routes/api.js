@@ -133,7 +133,7 @@ router.post('/shops/?', require_admin(), function(req, res) {
 router.get('/shops/:shopId/?', function(req, res) {
   var shopId = req.params.shopId;
   models.Shop.findById(shopId, function(err, shop) {
-    models.fillObjects(shop, function(err, shop) {
+    models.Shop.fillObjects(shop, function(err, shop) {
       send_json_response(res, err, {shop: shop[0]});
     });
   });
@@ -181,7 +181,7 @@ router.post('/shops/:shopId/comments/?', require_login(), function(req, res) {
 router.get('/shops/:shopId/comments/:commentId/?', function(req, res) {
   var commentId = req.params.commentId;
   models.ShopComment.findById(commentId, function(err, comment) {
-    models.fillObjects(comment, function(err, comment) {
+    models.ShopComment.fillObjects(comment, function(err, comment) {
       send_json_response(res, err, {comment: comment[0]});
     });
   });
@@ -229,7 +229,7 @@ router.post('/shops/:shopId/items/?', require_login(), function(req, res) {
 router.get('/shops/:shopId/items/:itemId/?', function(req, res) {
   var itemId = req.params.itemId;
   models.Item.findById(itemId, function(err, item) {
-    models.fillObjects(item, function(err, item) {
+    models.Item.fillObjects(item, function(err, item) {
       send_json_response(res, err, {item: item[0]});
     });
   });
@@ -277,7 +277,7 @@ router.post('/shops/:shopId/items/:itemId/comments/?', require_login(), function
 router.get('/shops/:shopId/items/:itemId/comments/:commentId/?', function(req, res) {
   var commentId = req.params.commentId;
   models.ItemComment.findById(commentId, function(err, comment) {
-    models.fillObjects(comment, function(err, comment) {
+    models.ItemComment.fillObjects(comment, function(err, comment) {
       send_json_response(res, err, {comment: comment[0]});
     });
   });
