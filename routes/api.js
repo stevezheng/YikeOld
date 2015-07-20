@@ -55,7 +55,7 @@ router.get('/categories/:categoryId/?', function(req, res) {
 
 router.delete('/categories/:categoryId/?', require_admin(), function(req, res) {
   models.Category.findById(req.params.categoryId, function(err, category) {
-    if (err) return send_json_response(res);
+    if (err) return send_json_response(res, err);
     category.destory(function(err) {
       send_json_response(res, err);
     });
