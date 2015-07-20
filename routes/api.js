@@ -337,4 +337,47 @@ router.delete('/addrs/:addrId/?', require_login(), function(req, res) {
   })
 });
 // end address
+
+// start orders
+router.get('/orders/?', require_login(), function(req, res) {
+  var userId = req.user.userId;
+  models.Order.find({userId: userId}, function(err, orders) {
+    orders = orders.map(function(order) {
+      return order.toJSON();
+    })
+    send_json_response(res, err, {orders: orders});
+  });
+});
+
+router.post('/orders/?', require_login(), function(req, res) {
+  var userId = req.user.userId;
+  var data = req.body;
+  var order = new models.Order(data);
+  order.userId = userId;
+  order.save(function(err, order) {
+    send_json_response(res, err, {order: order.toJSON()});
+  });
+});
+
+router.get('/orders/:orderId/?', require_login(), function(req, res) {
+  models.Order.findById(req.params.orderId, function(err, order) {
+    if (order.userId !== req.user.id && !req.admin) {
+      return res.send(400, 'Permission denied!');
+    }
+    send_json_response(res, err, {order: order.toJSON()});
+  })
+});
+
+router.delete('/orders/:orderId/?', require_login(), function(req, res) {
+  models.Order.findById(req.params.orderId, function(err, order) {
+    if (err) return send_json_response(res, err);
+    if (order.userId !== req.user.id && !req.admin) {
+      return res.send(400, 'Permission denied!');
+    }
+    order.destory(function(err) {
+      send_json_response(res, err);
+    });
+  })
+});
+// end orders
 module.exports = router;
