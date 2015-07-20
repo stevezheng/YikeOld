@@ -294,4 +294,41 @@ router.post('/shops/:shopId/items/:itemId/comments/:commentId/?', require_login(
   });
 });
 // end item comment
+
+// start address
+router.get('/addrs/?', require_login(), function(req, res) {
+  var userId = req.user.userId;
+  models.Address.find({userId: userId}, function(err, addrs) {
+    addrs = addrs.map(function(addr) {
+      return addr.toJSON();
+    })
+    send_json_response(res, err, {addrs: addrs});
+  });
+});
+
+router.post('/addrs/?', require_login(), function(req, res) {
+  var userId = req.user.userId;
+  var data = req.body;
+  var addr = new models.Address(data);
+  addr.userId = userId;
+  addr.save(function(err, addr) {
+    send_json_response(res, err, {addr: addr.toJSON()});
+  });
+});
+
+router.get('/addrs/:addrId/?', require_login(), function(req, res) {
+  models.Address.findById(req.params.addrId, function(err, addr) {
+    send_json_response(res, err, {addr: addr.toJSON()});
+  })
+});
+
+router.delete('/addrs/:addrId/?', require_login(), function(req, res) {
+  models.Address.findById(req.params.addrId, function(err, addr) {
+    if (err) return send_json_response(res, err);
+    addr.destory(function(err) {
+      send_json_response(res, err);
+    });
+  })
+});
+// end address
 module.exports = router;
