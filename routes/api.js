@@ -198,4 +198,52 @@ router.post('/shops/:shopId/comments/:commentId/?', require_login(), function(re
   });
 });
 // end shop comment
+
+// start shop item
+router.get('/shops/:shopId/items/?', function(req, res) {
+  var shopId = req.params.shopId;
+  var qs = req.query;
+  var max = Number(qs.max) || Number.MAX_VALUE;
+  var limit = Number(qs.limit) || 10;
+  if (limit > 100) {
+    limit = 100;
+  }
+  models.Item.find({objectId_$lt: max, shopId: shopId}, {limit: limit}, function(err, items) {
+    if (err) return send_json_response(res, err);
+    models.Item.fillObjects(items, function(err, items) {
+      send_json_response(res, err, {items: items});
+    });
+  });
+});
+
+router.post('/shops/:shopId/items/?', require_login(), function(req, res) {
+  var data = req.body;
+  var shopId = req.params.shopId;
+  var item = new models.Item(data);
+  item.shopId = shopId;
+  item.save(function(err, item) {
+    send_json_response(res, err, {item: item.toJSON()});
+  });
+});
+
+router.get('/shops/:shopId/items/:itemId/?', function(req, res) {
+  var itemId = req.params.itemId;
+  models.Item.findById(itemId, function(err, item) {
+    models.fillObjects(item, function(err, item) {
+      send_json_response(res, err, {item: item[0]});
+    });
+  });
+});
+
+router.post('/shops/:shopId/items/:itemId/?', require_login(), function(req, res) {
+  var data = req.body;
+  var itemId = req.params.itemId;
+  models.Item.findById(itemId, function(err, item) {
+    item = _.extend(item, data);
+    item.save(function(err, item) {
+      send_json_response(res, err, {item: item.toJSON()});
+    });
+  });
+});
+// end shop item
 module.exports = router;
