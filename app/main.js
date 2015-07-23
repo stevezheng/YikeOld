@@ -10,6 +10,11 @@ var Dashboard = React.createClass({
           <views.UserList />
           <views.CategoryList />
           <views.ConfigList />
+          <views.ShopModal />
+          <views.OrderModal />
+          <views.UserModal />
+          <views.CategoryModal />
+          <views.ConfigModal />
         </div>
     );
   }
