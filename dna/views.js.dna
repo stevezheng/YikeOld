@@ -36,6 +36,9 @@ function generateList(options) {
 .  loadNext: function() {
 .    this.load@{propNames}(this.state.nextId);
 .  },
+.  handleAdd: function() {
+.    $('#@{propName}-add').modal();
+.  },
 .  render: function() {
 .    var @{propNames} = this.state.@{propNames} || [];
 .    @{propNames} = @{propNames}.map(function(@{propName}) {
@@ -69,7 +72,7 @@ fields.forEach(function(field) {
 .                                  ID: <input type="text" style={{width: 50}} /> &nbsp;
 .                                  <button className="btn btn-success btn-xs">查询</button>
 .
-.                                  <button className="btn btn-info btn-xs pull-right">新增@{name}</button>
+.                                  <button className="btn btn-info btn-xs pull-right" onClick={this.handleAdd}>新增@{name}</button>
 .                              </p>
 .                          </div>
 .                      </div>
@@ -139,7 +142,7 @@ function generateModal(options) {
 .                  </form>
 .                  <div className="modal-footer">
 .                      <button data-dismiss="modal" className="btn btn-default" type="button" id="btn-cancel">取消 </button>
-.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add" onClick="{this.handleAdd}">确定</button>
+.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add" onClick={this.handleAdd}>确定</button>
 .                  </div>
 .              </div>
 .          </div>
