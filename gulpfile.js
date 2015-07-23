@@ -15,6 +15,18 @@ gulp.task('default', ['clean'], function (cb) {
   runSequence(['app'],cb);
 });
 
+gulp.task('dna', function() {
+  var options = {
+    continueOnError: false, // default = false, true means don't emit error event
+    pipeStdout: true, // default = false, true means stdout is written to file.contents
+  };
+
+  gulp.src('dna/views.js', {read: false})
+    .pipe($.exec('node_modules/.bin/ribosome.js dna/views.js.dna', options))
+    .pipe($.rename('views.js'))
+    .pipe(gulp.dest('app'));
+});
+
 // Build app.js
 gulp.task('app', function() {
   gulp.src('app/main.js', {read: false})
