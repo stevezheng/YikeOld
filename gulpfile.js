@@ -28,9 +28,9 @@ gulp.task('dna', function() {
 });
 
 // Build app.js
-gulp.task('app', function() {
+gulp.task('app', ['dna'], function() {
   gulp.src('app/main.js', {read: false})
-    .pipe($.browserify({insertGlobals: true, exclude: 'localStorage'}))
+    .pipe($.browserify({insertGlobals: true, exclude: 'localStorage', transform: ['reactify']}))
     .pipe($.rename('app.js'))
     .pipe(gulp.dest('./public/app'));
 });

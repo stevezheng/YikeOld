@@ -39,6 +39,10 @@
     "gulp-exec": "^2.1.1",
     "gulp-load-plugins": "^0.10.0",
     "gulp-rename": "^1.2.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "react-style": "^0.5.5",
+    "reactify": "^1.1.1",
     "run-sequence": "^1.0.2"
   }
 }
