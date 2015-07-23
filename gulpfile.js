@@ -6,25 +6,20 @@ var fs = require('fs');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
+var exec = require('child_process').exec;
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['public/app'], {dot: true}));
+gulp.task('clean', del.bind(null, ['public/app', 'app/views.js'], {dot: true}));
 
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function (cb) {
   runSequence(['app'],cb);
 });
 
-gulp.task('dna', function() {
-  var options = {
-    continueOnError: false, // default = false, true means don't emit error event
-    pipeStdout: true, // default = false, true means stdout is written to file.contents
-  };
-
-  gulp.src('dna/views.js', {read: false})
-    .pipe($.exec('node_modules/.bin/ribosome.js dna/views.js.dna', options))
-    .pipe($.rename('views.js'))
-    .pipe(gulp.dest('app'));
+gulp.task('dna', function (cb) {
+  exec('node_modules/.bin/ribosome.js dna/views.js.dna > app/views.js', function (err, stdout, stderr) {
+    cb(err);
+  });
 });
 
 // Build app.js

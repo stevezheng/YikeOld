@@ -5,7 +5,7 @@ function generate(options) {
   var className = options.className;
   var propName = options.prop;
   var title = options.title;
-  var fields = options.fields;
+  var fields = options.fields || [];
   var name = options.name;
   var uri = options.uri;
 
@@ -42,9 +42,9 @@ function generate(options) {
 .        <tr>
 .            <td>{@{propName}.id}</td>
 
-for (var fieldName in fields) {
-.            <td>{@{propName}.@{fieldName}}</td>
-}
+fields.forEach(function(field) {
+.            <td>{@{propName}.@{field.name}}</td>
+});
 
 .            <td>{prettyTime(@{propName}.createdAt)}</td>
 .            <td>
@@ -76,9 +76,9 @@ for (var fieldName in fields) {
 .                          <thead>
 .                          <tr>
 .                              <th>@{name}id</th>
-for (var fieldName in fields) {
-.                              <th>@{name}@{fieldName}</th>
-}
+fields.forEach(function(field) {
+.                              <th>@{field.desc}</th>
+});
 .                              <th>创建时间</th>
 .                              <th>操作</th>
 .                          </tr>
@@ -109,17 +109,25 @@ for (var fieldName in fields) {
 generate({
   className: 'ShopList',
   prop: 'shop',
-  title: '产品管理',
-  fields: models.Shop.$fields,
+  title: '商家管理',
+  fields: [
+    {name: 'description',  desc: '店铺描述'},
+    {name: 'address',      desc: '店铺地址'},
+    {name: 'area',         desc: '店铺区域'},
+    {name: 'distrinct',    desc: '商圈'},
+    {name: 'name',         desc: '店铺名字'},
+    {name: 'title',        desc: '店铺简称'},
+    {name: 'categoryName', desc: '店铺分类'},
+  ],
   name: '商家',
   uri: '/api/shops/',
 });
 
-generate({
-  className: 'ItemList',
-  prop: 'item',
-  title: '产品管理',
-  fields: models.Item.fields,
-  name: '商品',
-  uri: '/api/shops/:shopId/items/'
-});
+// generate({
+//   className: 'ItemList',
+//   prop: 'item',
+//   title: '产品管理',
+//   fields: models.Item.fields,
+//   name: '商品',
+//   uri: '/api/shops/:shopId/items/'
+// });
