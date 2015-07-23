@@ -1,7 +1,7 @@
 'use strict';
 var models = require('../lib/models');
 
-function generate(options) {
+function generateList(options) {
   var className = options.className;
   var propName = options.prop;
   var title = options.title;
@@ -121,7 +121,7 @@ fields.forEach(function(field) {
 .  return string;
 .}
 
-generate({
+generateList({
   className: 'ShopList',
   prop: 'shop',
   title: '商家管理',
@@ -138,7 +138,7 @@ generate({
   uri: '/api/shops/',
 });
 
-generate({
+generateList({
   className: 'OrderList',
   prop: 'order',
   title: '订单管理',
@@ -158,7 +158,7 @@ generate({
   uri: '/api/orders/'
 });
 
-generate({
+generateList({
   className: 'UserList',
   prop: 'user',
   title: '会员管理',
@@ -169,7 +169,7 @@ generate({
   uri: '/api/users/'
 });
 
-generate({
+generateList({
   className: 'CategoryList',
   prop: 'category',
   title: '分类管理',
@@ -180,7 +180,7 @@ generate({
   uri: '/api/categories/'
 });
 
-generate({
+generateList({
   className: 'ConfigList',
   prop: 'config',
   title: '配置管理',
