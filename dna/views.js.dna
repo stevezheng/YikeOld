@@ -123,8 +123,10 @@ function generateModal(options) {
 .    }
     }
   });
-.    $.post('@{uri}', {form: config}, function(data) {
+.    $.post('@{uri}', @{propName}, function(data) {
+.    $('#@{propName}-add').modal('hide');
 .      console.log(data);
+.      alert('添加成功！');
 .    });
 .  },
 .  render: function() {
