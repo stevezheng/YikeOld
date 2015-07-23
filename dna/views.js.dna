@@ -4,6 +4,7 @@ var models = require('../lib/models');
 function generateList(options) {
   var className = options.className;
   var propName = options.prop;
+  var propNames = options.props || propName + 's';
   var title = options.title;
   var fields = options.fields || [];
   var name = options.name;
@@ -11,33 +12,33 @@ function generateList(options) {
 
 .var @{className} = exports.@{className} = React.createClass({
 .  getInitialState: function() {
-.    return {@{propName}s: [], limit: 10, prevId: '', nextId: ''};
+.    return {@{propNames}: [], limit: 10, prevId: '', nextId: ''};
 .  },
-.  load@{propName}s: function(max) {
+.  load@{propNames}: function(max) {
 .    var self = this;
 .    var limit = this.state.limit;
-.    var prevId = this.state.@{propName}s[0];
+.    var prevId = this.state.@{propNames}[0];
 .    max = max || '';
 .    self.setState({prevId: prevId ? prevId.objectId : '' });
 .    $.get('@{uri}?max=' + max + '&limit=' + limit, function(data) {
 .      var prevId = '';
-.      var nextId = data.@{propName}s[data.@{propName}s.length - 1];
+.      var nextId = data.@{propNames}[data.@{propNames}.length - 1];
 .      self.setState({nextId: nextId ? nextId.objectId : '' });
 .      self.setState(data);
 .    });
 .  },
 .  componentDidMount: function() {
-.    this.load@{propName}s()
+.    this.load@{propNames}()
 .  },
 .  loadPrev: function() {
-.    this.load@{propName}s(this.state.prevId);
+.    this.load@{propNames}(this.state.prevId);
 .  },
 .  loadNext: function() {
-.    this.load@{propName}s(this.state.nextId);
+.    this.load@{propNames}(this.state.nextId);
 .  },
 .  render: function() {
-.    var @{propName}s = this.state.@{propName}s || [];
-.    @{propName}s = @{propName}s.map(function(@{propName}) {
+.    var @{propNames} = this.state.@{propNames} || [];
+.    @{propNames} = @{propNames}.map(function(@{propName}) {
 .      return (
 .        <tr>
 .            <td>{@{propName}.objectId}</td>
@@ -83,7 +84,7 @@ fields.forEach(function(field) {
 .                              <th>操作</th>
 .                          </tr>
 .                          </thead>
-.                          {@{propName}s}
+.                          {@{propNames}}
 .                      </table>
 .                      <div className="text-center">
 .                          <ul className="pagination">
@@ -221,6 +222,7 @@ generateList({
 generateList({
   className: 'CategoryList',
   prop: 'category',
+  props: 'categories',
   title: '分类管理',
   fields: [
     {name: 'name',             desc: '分类'},
@@ -292,6 +294,7 @@ generateModal({
 generateModal({
   className: 'CategoryModal',
   prop: 'category',
+  props: 'categories',
   title: '分类管理',
   fields: [
     {name: 'name',             desc: '分类'},
