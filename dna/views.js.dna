@@ -39,8 +39,15 @@ function generateList(options) {
 .  handleAdd: function() {
 .    $('#@{propName}-add').modal();
 .  },
+.  handleEdit: function() {
+.    alert("developing!");
+.  },
+.  handleSearch: function() {
+.    alert("developing!");
+.  },
 .  render: function() {
 .    var @{propNames} = this.state.@{propNames} || [];
+.    var self = this;
 .    @{propNames} = @{propNames}.map(function(@{propName}) {
 .      return (
 .        <tr>
@@ -52,7 +59,7 @@ fields.forEach(function(field) {
 
 .            <td>{prettyTime(@{propName}.createdAt)}</td>
 .            <td>
-.                <button className="btn btn-success btn-xs">编辑</button>
+.                <button className="btn btn-success btn-xs" onClick={self.handleEdit}>编辑</button>
 .            </td>
 .        </tr>
 .      );
@@ -70,7 +77,7 @@ fields.forEach(function(field) {
 .                          <div className="col-lg-12">
 .                              <p>
 .                                  ID: <input type="text" style={{width: 50}} /> &nbsp;
-.                                  <button className="btn btn-success btn-xs">查询</button>
+.                                  <button className="btn btn-success btn-xs" onClick={this.handleSearch}>查询</button>
 .
 .                                  <button className="btn btn-info btn-xs pull-right" onClick={this.handleAdd}>新增@{name}</button>
 .                              </p>
