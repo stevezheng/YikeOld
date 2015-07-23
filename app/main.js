@@ -4,9 +4,12 @@ var views = require('./views');
 var Dashboard = React.createClass({
   render: function() {
     return (
-        <h1>Hello World</h1>
-        );
+        <div>
+          <views.ShopList />
+          <views.OrderList />
+        </div>
+    );
   }
 });
 
-React.render(<views.ShopList />, document.getElementById('app'));
+React.render(<Dashboard />, document.getElementById('app'));
