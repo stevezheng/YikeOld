@@ -7,6 +7,9 @@ var Dashboard = React.createClass({
         <div>
           <views.ShopList />
           <views.OrderList />
+          <views.UserList />
+          <views.CategoryList />
+          <views.ConfigList />
         </div>
     );
   }

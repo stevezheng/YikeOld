@@ -157,3 +157,37 @@ generate({
   name: '订单',
   uri: '/api/orders/'
 });
+
+generate({
+  className: 'UserList',
+  prop: 'user',
+  title: '会员管理',
+  fields: [
+    {name: 'username',             desc: '用户名'},
+  ],
+  name: '用户',
+  uri: '/api/users/'
+});
+
+generate({
+  className: 'CategoryList',
+  prop: 'category',
+  title: '分类管理',
+  fields: [
+    {name: 'name',             desc: '分类'},
+  ],
+  name: '分类',
+  uri: '/api/categories/'
+});
+
+generate({
+  className: 'ConfigList',
+  prop: 'config',
+  title: '配置管理',
+  fields: [
+    {name: 'key',             desc: 'key'},
+    {name: 'value',             desc: 'value'},
+  ],
+  name: '配置',
+  uri: '/api/configs/'
+});
