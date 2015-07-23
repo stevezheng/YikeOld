@@ -111,11 +111,17 @@ function generateModal(options) {
   var propName = options.prop;
   var fields = options.fields;
   var uri = options.uri;
-.var @{className} = React.createClass({
+.var @{className} = exports.@{className}= React.createClass({
 .  handleAdd: function() {
 .    var @{propName} = {};
   fields.forEach(function(field) {
 .    @{propName}.@{field.name} = this.refs.@{field.name}.getDOMNode().value.trim();
+    if (field.required === true) {
+.    if (!@{propName}.@{field.name}) {
+.      alert("@{field.desc} is required.");
+.      return;
+.    }
+    }
   });
 .    $.post('@{uri}', {form: config}, function(data) {
 .      console.log(data);
@@ -251,13 +257,13 @@ generateModal({
   prop: 'shop',
   title: '商家管理',
   fields: [
-    {name: 'name',         desc: '店铺名字'},
-    {name: 'title',        desc: '店铺简称'},
-    {name: 'categoryName', desc: '店铺分类'},
-    {name: 'address',      desc: '店铺地址'},
-    {name: 'area',         desc: '店铺区域'},
-    {name: 'distrinct',    desc: '商圈'},
-    {name: 'description',  desc: '店铺描述'},
+    {name: 'name',         desc: '店铺名字', required: true},
+    {name: 'title',        desc: '店铺简称', required: true},
+    {name: 'categoryName', desc: '店铺分类', required: true},
+    {name: 'address',      desc: '店铺地址', required: true},
+    {name: 'area',         desc: '店铺区域', required: true},
+    {name: 'distrinct',    desc: '商圈', required: true},
+    {name: 'description',  desc: '店铺描述', required: true},
   ],
   name: '商家',
   uri: '/api/shops/',
@@ -288,7 +294,7 @@ generateModal({
   prop: 'user',
   title: '会员管理',
   fields: [
-    {name: 'username', desc: '用户名'},
+    {name: 'username', desc: '用户名', required: true},
   ],
   name: '用户',
   uri: '/api/users/'
@@ -300,7 +306,7 @@ generateModal({
   props: 'categories',
   title: '分类管理',
   fields: [
-    {name: 'name', desc: '分类'},
+    {name: 'name', desc: '分类', required: true},
   ],
   name: '分类',
   uri: '/api/categories/'
@@ -311,8 +317,8 @@ generateModal({
   prop: 'config',
   title: '配置管理',
   fields: [
-    {name: 'key',   desc: 'key'},
-    {name: 'value', desc: 'value'},
+    {name: 'key',   desc: 'key', required: true},
+    {name: 'value', desc: 'value', required: true},
   ],
   name: '配置',
   uri: '/api/configs/'
