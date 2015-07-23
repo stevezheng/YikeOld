@@ -40,7 +40,7 @@ function generate(options) {
 .    @{propName}s = @{propName}s.map(function(@{propName}) {
 .      return (
 .        <tr>
-.            <td>{@{propName}.id}</td>
+.            <td>{@{propName}.objectId}</td>
 
 fields.forEach(function(field) {
 .            <td>{@{propName}.@{field.name}}</td>
@@ -75,7 +75,7 @@ fields.forEach(function(field) {
 .                      <table className="table">
 .                          <thead>
 .                          <tr>
-.                              <th>@{name}id</th>
+.                              <th>@{name}Id</th>
 fields.forEach(function(field) {
 .                              <th>@{field.desc}</th>
 });
@@ -111,13 +111,13 @@ generate({
   prop: 'shop',
   title: '商家管理',
   fields: [
-    {name: 'description',  desc: '店铺描述'},
-    {name: 'address',      desc: '店铺地址'},
-    {name: 'area',         desc: '店铺区域'},
-    {name: 'distrinct',    desc: '商圈'},
     {name: 'name',         desc: '店铺名字'},
     {name: 'title',        desc: '店铺简称'},
     {name: 'categoryName', desc: '店铺分类'},
+    {name: 'address',      desc: '店铺地址'},
+    {name: 'area',         desc: '店铺区域'},
+    {name: 'distrinct',    desc: '商圈'},
+    {name: 'description',  desc: '店铺描述'},
   ],
   name: '商家',
   uri: '/api/shops/',
