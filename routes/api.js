@@ -66,9 +66,11 @@ router.delete('/categories/:categoryId/?', require_admin(), function(req, res) {
 // start configs;
 router.get('/configs/?', function(req, res) {
   models.Config.find(function(err, confs) {
-    confs = confs.map(function(conf) {
-      return conf.toJSON();
-    });
+    if (confs) {
+      confs = confs.map(function(conf) {
+        return conf.toJSON();
+      });
+    }
     send_json_response(res, err, {configs: confs});
   })
 });
