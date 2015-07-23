@@ -106,7 +106,17 @@ function generateModal(options) {
   var name = options.name;
   var propName = options.prop;
   var fields = options.fields;
+  var uri = options.uri;
 .var @{className} = React.createClass({
+.  handleAdd: function() {
+.    var @{propName} = {};
+  fields.forEach(function(field) {
+.    @{propName}.@{field.name} = this.refs.@{field.name}.getDOMNode().value.trim();
+  });
+.    $.post('@{uri}', {form: config}, function(data) {
+.      console.log(data);
+.    });
+.  },
 .  render: function() {
 .    return (
 .      <div aria-labelledby="add" role="dialog" tabindex="-1" id="@{propName}-add" className="modal fade">
@@ -121,14 +131,14 @@ function generateModal(options) {
   fields.forEach(function(field) {
 .                      <div className="form-group">
 .                          <label className="control-label col-lg-3">@{field.desc}</label>
-.                          <div className="col-lg-4"><input name="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" /></div>
+.                          <div className="col-lg-4"><input ref="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" /></div>
 .                      </div>
 
   });
 .                  </form>
 .                  <div className="modal-footer">
 .                      <button data-dismiss="modal" className="btn btn-default" type="button" id="btn-cancel">取消 </button>
-.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add">确定</button>
+.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add" onClick="{this.handleAdd}">确定</button>
 .                  </div>
 .              </div>
 .          </div>
