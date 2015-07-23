@@ -1,1 +1,23 @@
-var models = require('../lib/models');
+var React = require('react');
+var views = require('./views');
+
+var Dashboard = React.createClass({
+  render: function() {
+    return (
+        <div>
+          <views.ShopList />
+          <views.OrderList />
+          <views.UserList />
+          <views.CategoryList />
+          <views.ConfigList />
+          <views.ShopModal />
+          <views.OrderModal />
+          <views.UserModal />
+          <views.CategoryModal />
+          <views.ConfigModal />
+        </div>
+    );
+  }
+});
+
+React.render(<Dashboard />, document.getElementById('app'));

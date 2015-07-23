@@ -1,5 +1,6 @@
 .avoscloud/
 node_modules
+!node_modules/.bin/ribosome.js
 
 # VIM
 *~

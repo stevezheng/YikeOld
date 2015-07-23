@@ -1,0 +1,334 @@
+'use strict';
+var models = require('../lib/models');
+
+function generateList(options) {
+  var className = options.className;
+  var propName = options.prop;
+  var propNames = options.props || propName + 's';
+  var title = options.title;
+  var fields = options.fields || [];
+  var name = options.name;
+  var uri = options.uri;
+
+.var @{className} = exports.@{className} = React.createClass({
+.  getInitialState: function() {
+.    return {@{propNames}: [], limit: 10, prevId: '', nextId: ''};
+.  },
+.  load@{propNames}: function(max) {
+.    var self = this;
+.    var limit = this.state.limit;
+.    var prevId = this.state.@{propNames}[0];
+.    max = max || '';
+.    self.setState({prevId: prevId ? prevId.objectId : '' });
+.    $.get('@{uri}?max=' + max + '&limit=' + limit, function(data) {
+.      var prevId = '';
+.      var nextId = data.@{propNames}[data.@{propNames}.length - 1];
+.      self.setState({nextId: nextId ? nextId.objectId : '' });
+.      self.setState(data);
+.    });
+.  },
+.  componentDidMount: function() {
+.    this.load@{propNames}()
+.  },
+.  loadPrev: function() {
+.    this.load@{propNames}(this.state.prevId);
+.  },
+.  loadNext: function() {
+.    this.load@{propNames}(this.state.nextId);
+.  },
+.  handleAdd: function() {
+.    $('#@{propName}-add').modal();
+.  },
+.  handleEdit: function() {
+.    alert("developing!");
+.  },
+.  handleSearch: function() {
+.    alert("developing!");
+.  },
+.  render: function() {
+.    var @{propNames} = this.state.@{propNames} || [];
+.    var self = this;
+.    @{propNames} = @{propNames}.map(function(@{propName}) {
+.      return (
+.        <tr>
+.            <td>{@{propName}.objectId}</td>
+
+fields.forEach(function(field) {
+.            <td>{@{propName}.@{field.name}}</td>
+});
+
+.            <td>{prettyTime(@{propName}.createdAt)}</td>
+.            <td>
+.                <button className="btn btn-success btn-xs" onClick={self.handleEdit}>编辑</button>
+.            </td>
+.        </tr>
+.      );
+.    });
+.
+.    return (
+.      <div className="row">
+.          <div className="col-lg-12">
+.              <section className="panel">
+.                  <header className="panel-heading">
+.                      @{title}
+.                  </header>
+.                  <div className="panel-body">
+.                      <div className="row">
+.                          <div className="col-lg-12">
+.                              <p>
+.                                  ID: <input type="text" style={{width: 50}} /> &nbsp;
+.                                  <button className="btn btn-success btn-xs" onClick={this.handleSearch}>查询</button>
+.
+.                                  <button className="btn btn-info btn-xs pull-right" onClick={this.handleAdd}>新增@{name}</button>
+.                              </p>
+.                          </div>
+.                      </div>
+.                      <table className="table">
+.                          <thead>
+.                          <tr>
+.                              <th>@{name}Id</th>
+fields.forEach(function(field) {
+.                              <th>@{field.desc}</th>
+});
+.                              <th>创建时间</th>
+.                              <th>操作</th>
+.                          </tr>
+.                          </thead>
+.                          {@{propNames}}
+.                      </table>
+.                      <div className="text-center">
+.                          <ul className="pagination">
+.                              <li><a href="javascript:;;;" onClick={this.loadPrev}>«</a></li>
+.                              <li><a href="javascript:;;;" onClick={this.loadNext}>»</a></li>
+.                          </ul>
+.                      </div>
+.                  </div>
+.              </section>
+.          </div>
+.      </div>
+.    )
+.  }
+.});
+}
+
+
+function generateModal(options) {
+  var className = options.className;
+  var name = options.name;
+  var propName = options.prop;
+  var fields = options.fields;
+  var uri = options.uri;
+.var @{className} = exports.@{className}= React.createClass({
+.  handleAdd: function() {
+.    var @{propName} = {};
+  fields.forEach(function(field) {
+.    @{propName}.@{field.name} = this.refs.@{field.name}.getDOMNode().value.trim();
+    if (field.required === true) {
+.    if (!@{propName}.@{field.name}) {
+.      alert("@{field.desc} is required.");
+.      return;
+.    }
+    }
+  });
+.    $.post('@{uri}', @{propName}, function(data) {
+.    $('#@{propName}-add').modal('hide');
+.      console.log(data);
+.      alert('添加成功！');
+.    });
+.  },
+.  render: function() {
+.    return (
+.      <div aria-labelledby="add" role="dialog" tabindex="-1" id="@{propName}-add" className="modal fade">
+.          <div className="modal-dialog">
+.              <div className="modal-content">
+.                  <div className="modal-header">
+.                      <button type="button" className="close" data-dismiss="modal"
+.                              aria-hidden="true">&times;</button>
+.                      <h4 className="modal-title">新增@{name}</h4>
+.                  </div>
+.                  <form className="modal-body form-horizontal cmxform tasi-form">
+  fields.forEach(function(field) {
+.                      <div className="form-group">
+.                          <label className="control-label col-lg-3">@{field.desc}</label>
+.                          <div className="col-lg-4"><input ref="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" /></div>
+.                      </div>
+
+  });
+.                  </form>
+.                  <div className="modal-footer">
+.                      <button data-dismiss="modal" className="btn btn-default" type="button" id="btn-cancel">取消 </button>
+.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add" onClick={this.handleAdd}>确定</button>
+.                  </div>
+.              </div>
+.          </div>
+.      </div>
+.    );
+.  }
+.});
+}
+
+
+.var React = require('react');
+
+.function prettyTime(timestamp) {
+.  var createdDate = new Date(timestamp);
+.  var distance = Math.round( ( +new Date() -timestamp ) / 6000 );
+.  var hours = ( '0' + createdDate.getHours() ).slice(-2);
+.  var minutes = ( '0' + createdDate.getMinutes() ).slice(-2);
+.  var month = ('0' + (createdDate.getMonth() + 1)).slice(-2);
+.  var date = ('0' + createdDate.getDate()).slice(-2);
+.  var year = createdDate.getFullYear();
+.  var string;
+.  if (distance < 1440) {
+.    string = [hours, minutes].join(':');
+.  } else if (distance < 2879) {
+.    string = '昨天';
+.  } else {
+.    string = [year, month, date].join('-');
+.  }
+.  return string;
+.}
+
+generateList({
+  className: 'ShopList',
+  prop: 'shop',
+  title: '商家管理',
+  fields: [
+    {name: 'name',         desc: '店铺名字'},
+    {name: 'title',        desc: '店铺简称'},
+    {name: 'categoryName', desc: '店铺分类'},
+    {name: 'address',      desc: '店铺地址'},
+    {name: 'area',         desc: '店铺区域'},
+    {name: 'distrinct',    desc: '商圈'},
+    {name: 'description',  desc: '店铺描述'},
+  ],
+  name: '商家',
+  uri: '/api/shops/',
+});
+
+generateList({
+  className: 'OrderList',
+  prop: 'order',
+  title: '订单管理',
+  fields: [
+    {name: 'userId',       desc: '用户ID'},
+    {name: 'cost',         desc: '总额'}, // 总额
+    {name: 'status',       desc: '订单状态'}, // 订单状态 -2-退货 -1-取消 0-订单创建成,未支付 1-订单已支付 2-订单已消费
+    {name: 'payMethod',    desc: '支付方式'}, // 支付方式 0-在线 1-现金
+    {name: 'useMethod',    desc: '消费方式'}, // 消费方式 0-到店消费 1-送货上门
+    {name: 'voucherId',    desc: '代金劵ID'},    // 代金券id id为空表示不使用代金券
+    {name: 'voucherMoney', desc: '代金券金额'}, // 代金券金额
+    {name: 'address',      desc: '地址'},
+    {name: 'alipaySN',     desc: '支付宝订单号'},   // 支付宝订单号
+    {name: 'wechatSN',     desc: '微信订单号'}    // 微信订单号
+  ],
+  name: '订单',
+  uri: '/api/orders/'
+});
+
+generateList({
+  className: 'UserList',
+  prop: 'user',
+  title: '会员管理',
+  fields: [
+    {name: 'username', desc: '用户名'},
+  ],
+  name: '用户',
+  uri: '/api/users/'
+});
+
+generateList({
+  className: 'CategoryList',
+  prop: 'category',
+  props: 'categories',
+  title: '分类管理',
+  fields: [
+    {name: 'name', desc: '分类'},
+  ],
+  name: '分类',
+  uri: '/api/categories/'
+});
+
+generateList({
+  className: 'ConfigList',
+  prop: 'config',
+  title: '配置管理',
+  fields: [
+    {name: 'key',   desc: 'key'},
+    {name: 'value', desc: 'value'},
+  ],
+  name: '配置',
+  uri: '/api/configs/'
+});
+
+generateModal({
+  className: 'ShopModal',
+  prop: 'shop',
+  title: '商家管理',
+  fields: [
+    {name: 'name',         desc: '店铺名字', required: true},
+    {name: 'title',        desc: '店铺简称', required: true},
+    {name: 'categoryName', desc: '店铺分类', required: true},
+    {name: 'address',      desc: '店铺地址', required: true},
+    {name: 'area',         desc: '店铺区域', required: true},
+    {name: 'distrinct',    desc: '商圈', required: true},
+    {name: 'description',  desc: '店铺描述', required: true},
+  ],
+  name: '商家',
+  uri: '/api/shops/',
+});
+
+generateModal({
+  className: 'OrderModal',
+  prop: 'order',
+  title: '订单管理',
+  fields: [
+    {name: 'userId',       desc: '用户ID'},
+    {name: 'cost',         desc: '总额'}, // 总额
+    {name: 'status',       desc: '订单状态'}, // 订单状态 -2-退货 -1-取消 0-订单创建成,未支付 1-订单已支付 2-订单已消费
+    {name: 'payMethod',    desc: '支付方式'}, // 支付方式 0-在线 1-现金
+    {name: 'useMethod',    desc: '消费方式'}, // 消费方式 0-到店消费 1-送货上门
+    {name: 'voucherId',    desc: '代金劵ID'},    // 代金券id id为空表示不使用代金券
+    {name: 'voucherMoney', desc: '代金券金额'}, // 代金券金额
+    {name: 'address',      desc: '地址'},
+    {name: 'alipaySN',     desc: '支付宝订单号'},   // 支付宝订单号
+    {name: 'wechatSN',     desc: '微信订单号'}    // 微信订单号
+  ],
+  name: '订单',
+  uri: '/api/orders/'
+});
+
+generateModal({
+  className: 'UserModal',
+  prop: 'user',
+  title: '会员管理',
+  fields: [
+    {name: 'username', desc: '用户名', required: true},
+  ],
+  name: '用户',
+  uri: '/api/users/'
+});
+
+generateModal({
+  className: 'CategoryModal',
+  prop: 'category',
+  props: 'categories',
+  title: '分类管理',
+  fields: [
+    {name: 'name', desc: '分类', required: true},
+  ],
+  name: '分类',
+  uri: '/api/categories/'
+});
+
+generateModal({
+  className: 'ConfigModal',
+  prop: 'config',
+  title: '配置管理',
+  fields: [
+    {name: 'key',   desc: 'key', required: true},
+    {name: 'value', desc: 'value', required: true},
+  ],
+  name: '配置',
+  uri: '/api/configs/'
+});

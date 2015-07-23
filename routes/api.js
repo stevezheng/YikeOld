@@ -92,7 +92,7 @@ router.post('/configs/:key/?', require_admin(), function(req, res) {
 //start user
 router.get('/users/?', require_admin(), function(req, res) {
   var qs = req.query;
-  var max = Number(qs.max) || Number.MAX_VALUE;
+  var max = qs.max || '';
   var limit = Number(qs.limit) || 10;
   if (limit > 100) {
     limit = 100;
@@ -109,7 +109,7 @@ router.get('/users/?', require_admin(), function(req, res) {
 //start shop
 router.get('/shops/?', function(req, res) {
   var qs = req.query;
-  var max = Number(qs.max) || Number.MAX_VALUE;
+  var max = qs.max || '';
   var limit = Number(qs.limit) || 10;
   if (limit > 100) {
     limit = 100;
@@ -155,7 +155,7 @@ router.post('/shops/:shopId/?', require_admin(), function(req, res) {
 router.get('/shops/:shopId/comments/?', function(req, res) {
   var shopId = req.params.shopId;
   var qs = req.query;
-  var max = Number(qs.max) || Number.MAX_VALUE;
+  var max = qs.max || '';
   var limit = Number(qs.limit) || 10;
   if (limit > 100) {
     limit = 100;
@@ -203,7 +203,7 @@ router.post('/shops/:shopId/comments/:commentId/?', require_login(), function(re
 router.get('/shops/:shopId/items/?', function(req, res) {
   var shopId = req.params.shopId;
   var qs = req.query;
-  var max = Number(qs.max) || Number.MAX_VALUE;
+  var max = qs.max || '';
   var limit = Number(qs.limit) || 10;
   if (limit > 100) {
     limit = 100;
@@ -251,7 +251,7 @@ router.post('/shops/:shopId/items/:itemId/?', require_login(), function(req, res
 router.get('/shops/:shopId/items/:itemId/comments/?', function(req, res) {
   var itemId = req.params.itemId;
   var qs = req.query;
-  var max = Number(qs.max) || Number.MAX_VALUE;
+  var max = qs.max || '';
   var limit = Number(qs.limit) || 10;
   if (limit > 100) {
     limit = 100;

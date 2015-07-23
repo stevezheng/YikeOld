@@ -26,52 +26,6 @@
     <script src="/js/respond.min.js"></script>
     <![endif]-->
 
-    <script src="/lib/avoscloud-sdk/dist/av.js"></script>
-    <script src="/lib/underscore/underscore.js"></script>
-    <script src="/lib/angular/angular.js"></script>
-    <script src="/lib/angular/angular-route.js"></script>
-    <script src="/lib/yike/js/db.js"></script>
-
-    <script>
-        AV.initialize('<%= APP_ID%>', '<%=APP_KEY%>', '<%=MASTER_KEY%>');
-    </script>
-
-    <script src="/root/utils/utils.js"></script>
-    <script src="/root/utils/utils.upload.js"></script>
-
-    <!--script for this page-->
-    <script src="/root/app.js"></script>
-
-    <script src="/root/home/home.js"></script>
-    <script src="/root/home/home.list.js"></script>
-
-    <script src="/root/user/user.js"></script>
-    <script src="/root/user/user.list.js"></script>
-    <script src="/root/user/user.add.js"></script>
-    <script src="/root/user/user.login.js"></script>
-
-    <script src="/root/address/address.js"></script>
-    <script src="/root/address/address.list.js"></script>
-    <script src="/root/address/address.add.js"></script>
-
-    <script src="/root/item/item.js"></script>
-    <script src="/root/item/item.list.js"></script>
-    <script src="/root/item/item.add.js"></script>
-    <script src="/root/item/item.category.js"></script>
-    <script src="/root/item/item.category.add.js"></script>
-
-    <script src="/root/shop/shop.js"></script>
-    <script src="/root/shop/shop.common.js"></script>
-    <script src="/root/shop/shop.add.js"></script>
-    <script src="/root/shop/shop.edit.js"></script>
-
-    <script src="/root/order/order.js"></script>
-    <script src="/root/order/order.list.js"></script>
-    <script src="/root/order/order.add.js"></script>
-
-    <script src="/root/pay/pay.js"></script>
-    <script src="/root/pay/pay.list.js"></script>
-    <script src="/root/pay/pay.add.js"></script>
 </head>
 
 <body>
@@ -235,7 +189,7 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
-            <div ng-view>
+            <div id="app">
             </div>
         </section>
     </section>
@@ -268,6 +222,7 @@
 
 <!--common script for all pages-->
 <script src="/js/common-scripts.js"></script>
+<script src="/app/app.js"></script>
 </body>
 </html>
 
