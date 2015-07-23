@@ -138,11 +138,22 @@ generate({
   uri: '/api/shops/',
 });
 
-// generate({
-//   className: 'ItemList',
-//   prop: 'item',
-//   title: '产品管理',
-//   fields: models.Item.fields,
-//   name: '商品',
-//   uri: '/api/shops/:shopId/items/'
-// });
+generate({
+  className: 'OrderList',
+  prop: 'order',
+  title: '订单管理',
+  fields: [
+    {name: 'userId',           desc: '用户ID'},
+    {name: 'cost',             desc: '总额'}, // 总额
+    {name: 'status',           desc: '订单状态'}, // 订单状态 -2-退货 -1-取消 0-订单创建成,未支付 1-订单已支付 2-订单已消费
+    {name: 'payMethod',        desc: '支付方式'}, // 支付方式 0-在线 1-现金
+    {name: 'useMethod',        desc: '消费方式'}, // 消费方式 0-到店消费 1-送货上门
+    {name: 'voucherId',        desc: '代金劵ID'},    // 代金券id id为空表示不使用代金券
+    {name: 'voucherMoney',     desc: '代金券金额'}, // 代金券金额
+    {name: 'address',          desc: '地址'},
+    {name: 'alipaySN',         desc: '支付宝订单号'},   // 支付宝订单号
+    {name: 'wechatSN',         desc: '微信订单号'}    // 微信订单号
+  ],
+  name: '订单',
+  uri: '/api/orders/'
+});
