@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "del": "^1.1.1",
+    "es6ify": "^1.6.0",
     "gulp": "^3.9.0",
     "gulp-browserify": "^0.5.1",
     "gulp-exec": "^2.1.1",
