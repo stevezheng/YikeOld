@@ -7,9 +7,10 @@ var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
 var exec = require('child_process').exec;
+var reactify  = require('reactify');
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['public/app', 'app/views.js'], {dot: true}));
+gulp.task('clean', del.bind(null, ['public/app', 'app/views.jsx'], {dot: true}));
 
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function (cb) {
@@ -17,15 +18,22 @@ gulp.task('default', ['clean'], function (cb) {
 });
 
 gulp.task('dna', function (cb) {
-  exec('node_modules/.bin/ribosome.js dna/views.js.dna > app/views.js', function (err, stdout, stderr) {
+  exec('node_modules/.bin/ribosome.js dna/views.js.dna > app/views.jsx', function (err, stdout, stderr) {
     cb(err);
   });
 });
 
 // Build app.js
 gulp.task('app', ['dna'], function() {
-  gulp.src('app/main.js', {read: false})
-    .pipe($.browserify({insertGlobals: true, exclude: 'localStorage', transform: ['reactify']}))
+  gulp.src('app/main.jsx', {read: false})
+    .pipe($.browserify({
+      insertGlobals: true,
+      exclude: 'localStorage',
+      transform: [function(filename){
+        return reactify(filename, {es6: true})
+      }],
+      extensions: ['.js', '.jsx']
+    }))
     .pipe($.rename('app.js'))
     .pipe(gulp.dest('./public/app'));
 });
