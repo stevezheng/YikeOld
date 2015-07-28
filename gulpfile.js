@@ -10,7 +10,7 @@ var exec = require('child_process').exec;
 var reactify  = require('reactify');
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['public/app', 'app/views.js'], {dot: true}));
+gulp.task('clean', del.bind(null, ['public/app', 'app/views.jsx'], {dot: true}));
 
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function (cb) {
