@@ -25,6 +25,9 @@ function generateList(options) {
 .      var nextId = data.@{propNames}[data.@{propNames}.length - 1];
 .      self.setState({nextId: nextId ? nextId.objectId : '' });
 .      self.setState(data);
+.    }).fail(function(err) {
+.      console.log(arguments);
+.      alert('当前用户没有权限查看');
 .    });
 .  },
 .  componentDidMount: function() {
