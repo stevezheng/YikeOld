@@ -1,8 +1,13 @@
 var React = require('react');
 var ReactRouter = require('react-router');
 
-var {RouteHandler, Router, Route, NotFoundRoute, DefaultRoute} = ReactRouter;
+var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
 
+var {Nav, NavItem, NavBar} = ReactBootstrap;
+var {NavItemLink} = ReactRouterBootstrap;
+
+var {RouteHandler, Router, Route, NotFoundRoute, DefaultRoute, Link} = ReactRouter;
 
 class App extends React.Component{
   render() {
@@ -53,12 +58,10 @@ class Sidebar extends React.Component{
       <aside>
         <div id="sidebar"  className="nav-collapse ">
             <ul className="sidebar-menu" id="nav-accordion">
-                <li>
-                    <a className="active" href="/admin">
-                        <i className="icon-dashboard"></i>
-                        <span>首页</span>
-                    </a>
-                </li>
+              <NavItemLink to="dashboard">
+                <i className="icon-dashboard"></i>
+                <span>首页</span>
+              </NavItemLink>
 
                 <li className="sub-menu">
                     <a href="javascript:;">
