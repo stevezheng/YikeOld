@@ -180,7 +180,7 @@ var Dashboard = React.createClass({
   render: function() {
     return (
         <div>
-          Hello World!
+          欢迎进入管理后台！
         </div>
     );
   }
