@@ -7,7 +7,7 @@ var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
 var exec = require('child_process').exec;
-var es6ify = require('es6ify');
+var reactify  = require('reactify');
 
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['public/app', 'app/views.js'], {dot: true}));
@@ -29,7 +29,9 @@ gulp.task('app', ['dna'], function() {
     .pipe($.browserify({
       insertGlobals: true,
       exclude: 'localStorage',
-      transform: ['reactify', es6ify.configure(/.jsx?/)]
+      transform: [function(filename){
+        return reactify(filename, {es6: true})
+      }]
     }))
     .pipe($.rename('app.js'))
     .pipe(gulp.dest('./public/app'));
