@@ -39,7 +39,6 @@ class Sidebar extends React.Component{
                       <NavItemLink to="users">
                         <span>用户管理</span>
                       </NavItemLink>
-                        <li><a  href="/admin/#user">用户管理</a></li>
                         <li><a  href="/admin/#user-point">积分管理</a></li>
                         <li><a  href="/admin/#user-money">预存款管理</a></li>
                         <li><a  href="/admin/#user-address">地址管理</a></li>
