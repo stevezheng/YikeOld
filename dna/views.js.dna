@@ -9,6 +9,7 @@ function generateList(options) {
   var fields = options.fields || [];
   var name = options.name;
   var uri = options.uri;
+  var modal = options.modal || 'div';
 
 .var @{className} = exports.@{className} = React.createClass({
 .  getInitialState: function() {
@@ -39,9 +40,6 @@ function generateList(options) {
 .  loadNext: function() {
 .    this.load@{propNames}(this.state.nextId);
 .  },
-.  handleAdd: function() {
-.    $('#@{propName}-add').modal();
-.  },
 .  handleEdit: function() {
 .    alert("developing!");
 .  },
@@ -53,7 +51,7 @@ function generateList(options) {
 .    var self = this;
 .    @{propNames} = @{propNames}.map(function(@{propName}) {
 .      return (
-.        <tr>
+.        <tr key={@{propName}.objectId}>
 .            <td>{@{propName}.objectId}</td>
 
 fields.forEach(function(field) {
@@ -62,7 +60,7 @@ fields.forEach(function(field) {
 
 .            <td>{prettyTime(@{propName}.createdAt)}</td>
 .            <td>
-.                <button className="btn btn-success btn-xs" onClick={self.handleEdit}>编辑</button>
+.               <@{modal} @{propName}={@{propName}} key={@{propName}.objectId} btnName="编辑" btnStyle="btn btn-success btn-xs"/>
 .            </td>
 .        </tr>
 .      );
@@ -81,8 +79,7 @@ fields.forEach(function(field) {
 .                              <p>
 .                                  ID: <input type="text" style={{width: 50}} /> &nbsp;
 .                                  <button className="btn btn-success btn-xs" onClick={this.handleSearch}>查询</button>
-.
-.                                  <button className="btn btn-info btn-xs pull-right" onClick={this.handleAdd}>新增@{name}</button>
+.                                 <@{modal} btnName="新增@{name}" btnStyle="btn btn-info btn-xs pull-right"/>
 .                              </p>
 .                          </div>
 .                      </div>
@@ -122,49 +119,67 @@ function generateModal(options) {
   var fields = options.fields;
   var uri = options.uri;
 .var @{className} = exports.@{className}= React.createClass({
-.  handleAdd: function() {
+.  getInitialState() {
+.    return {show: false};
+.  },
+.  close(){
+.    this.setState({ show: false });
+.  },
+.
+.  open(){
+.    this.setState({ show: true });
+.  },
+.
+.  handleConfirm: function() {
 .    var @{propName} = {};
+.    var self = this;
   fields.forEach(function(field) {
 .    @{propName}.@{field.name} = this.refs.@{field.name}.getDOMNode().value.trim();
     if (field.required === true) {
 .    if (!@{propName}.@{field.name}) {
-.      alert("@{field.desc} is required.");
+.      alert("@{field.desc}不能为空.");
 .      return;
 .    }
     }
   });
-.    $.post('@{uri}', @{propName}, function(data) {
-.    $('#@{propName}-add').modal('hide');
+.    var uri = this.props.key ? "@{uri}" + this.props.key: "@{uri}";
+.    var msgPart = old_@{propName}.id ? '修改': '添加';
+.    $.post(uri, @{propName}, function(data) {
+.    $('#@{propName}-form').modal('hide');
 .      console.log(data);
-.      alert('添加成功！');
+.      alert(msgPart + '@{name}成功！');
+.      self.close();
+.    }).fail(function() {
+.      alert(msgPart + '@{name}失败！');
 .    });
 .  },
 .  render: function() {
+.    var @{propName} = this.props.@{propName} || {};
+.    var titlePart = this.props.key? '编辑' : '新增';
 .    return (
-.      <div aria-labelledby="add" role="dialog" tabindex="-1" id="@{propName}-add" className="modal fade">
-.          <div className="modal-dialog">
-.              <div className="modal-content">
-.                  <div className="modal-header">
-.                      <button type="button" className="close" data-dismiss="modal"
-.                              aria-hidden="true">&times;</button>
-.                      <h4 className="modal-title">新增@{name}</h4>
-.                  </div>
-.                  <form className="modal-body form-horizontal cmxform tasi-form">
+.      <div>
+.       <button className={this.props.btnStyle} onClick={this.open}> {this.props.btnName} </button>
+.       <Modal show={this.state.show} onHide={this.close}>
+.         <Modal.Header closeButton>
+.           <Modal.Title>{titlePart}@{name}</Modal.Title>
+.         </Modal.Header>
+.         <Modal.Body>
+.           <form className="form-horizontal cmxform tasi-form">
   fields.forEach(function(field) {
-.                      <div className="form-group">
-.                          <label className="control-label col-lg-3">@{field.desc}</label>
-.                          <div className="col-lg-4"><input ref="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" /></div>
-.                      </div>
+.             <div className="form-group">
+.               <label className="control-label col-lg-3">@{field.desc}</label>
+.               <div className="col-lg-4"><input ref="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" value={@{propName}.@{field.name}} /></div>
+.             </div>
 
   });
-.                  </form>
-.                  <div className="modal-footer">
-.                      <button data-dismiss="modal" className="btn btn-default" type="button" id="btn-cancel">取消 </button>
-.                      <button className="btn btn-info" type="button" id="btn-confirm" data-data="add" onClick={this.handleAdd}>确定</button>
-.                  </div>
-.              </div>
-.          </div>
-.      </div>
+.           </form>
+.         </Modal.Body>
+.         <Modal.Footer>
+.           <Button onClick={this.close}>取消</Button>
+.           <Button bsStyle="info" onClick={this.handleConfirm}>确定</Button>
+.         </Modal.Footer>
+.       </Modal>
+.     </div>
 .    );
 .  }
 .});
@@ -173,7 +188,7 @@ function generateModal(options) {
 .'use strict';
 .var React = require('react');
 .var ReactBootstrap = require('react-bootstrap');
-.var {ModalTrigger} = ReactBootstrap;
+.var {Modal, Button} = ReactBootstrap;
 .
 .function prettyTime(timestamp) {
 .  var createdDate = new Date(timestamp);
@@ -209,6 +224,7 @@ generateList({
   ],
   name: '商家',
   uri: '/api/shops/',
+  modal: 'ShopModal'
 });
 
 .
@@ -230,7 +246,8 @@ generateList({
     {name: 'wechatSN',     desc: '微信订单号'}    // 微信订单号
   ],
   name: '订单',
-  uri: '/api/orders/'
+  uri: '/api/orders/',
+  modal: 'OrderModal'
 });
 
 .
@@ -243,7 +260,8 @@ generateList({
     {name: 'username', desc: '用户名'},
   ],
   name: '用户',
-  uri: '/api/users/'
+  uri: '/api/users/',
+  modal: 'UserModal'
 });
 
 .
@@ -257,7 +275,8 @@ generateList({
     {name: 'name', desc: '分类'},
   ],
   name: '分类',
-  uri: '/api/categories/'
+  uri: '/api/categories/',
+  modal: 'CategoryModal'
 });
 
 .
@@ -271,7 +290,8 @@ generateList({
     {name: 'value', desc: 'value'},
   ],
   name: '配置',
-  uri: '/api/configs/'
+  uri: '/api/configs/',
+  modal: 'ConfigModal'
 });
 
 .

@@ -265,6 +265,7 @@ ReactRouter.run(routes, function(Handler, state)  {
 'use strict';
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var $__0=   ReactBootstrap,Modal=$__0.Modal,Button=$__0.Button;
 
 function prettyTime(timestamp) {
   var createdDate = new Date(timestamp);
@@ -284,15 +285,6 @@ function prettyTime(timestamp) {
   }
   return string;
 }
-const ModalTrigger = React.createClass({displayName: "ModalTrigger",
-  getInitialState:function(){
-    return { show: false };
-  },
-
-  render:function() {
-    return null;
-  }
-});
 var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
   getInitialState: function() {
     return {shops: [], limit: 10, prevId: '', nextId: ''};
@@ -322,9 +314,6 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
   loadNext: function() {
     this.loadshops(this.state.nextId);
   },
-  handleRemoveshop: function() {
-    console.log(arguments);
-  },
   handleEdit: function() {
     alert("developing!");
   },
@@ -347,9 +336,7 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
             React.createElement("td", null, shop.description), 
             React.createElement("td", null, prettyTime(shop.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ModalTrigger, {modal: React.createElement(ShopModal, {onRemove: self.handleRemoveshop, shop: shop, key: shop.objectId})}, 
-                  React.createElement("button", {className: "btn btn-success btn-xs"}, "编辑")
-               )
+               React.createElement(ShopModal, {shop: shop, key: shop.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -368,10 +355,7 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-
-                                  React.createElement(ModalTrigger, {modal: React.createElement(ShopModal, {onRemove: self.handleRemoveshop})}, 
-                                  React.createElement("button", {className: "btn btn-info btn-xs pull-right"}, "新增商家")
-                                  )
+                                 React.createElement(ShopModal, {btnName: "新增商家", btnStyle: "btn btn-info btn-xs pull-right"})
                               )
                           )
                       ), 
@@ -435,9 +419,6 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
   loadNext: function() {
     this.loadorders(this.state.nextId);
   },
-  handleRemoveorder: function() {
-    console.log(arguments);
-  },
   handleEdit: function() {
     alert("developing!");
   },
@@ -463,9 +444,7 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
             React.createElement("td", null, order.wechatSN), 
             React.createElement("td", null, prettyTime(order.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ModalTrigger, {modal: React.createElement(OrderModal, {onRemove: self.handleRemoveorder, order: order, key: order.objectId})}, 
-                  React.createElement("button", {className: "btn btn-success btn-xs"}, "编辑")
-               )
+               React.createElement(OrderModal, {order: order, key: order.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -484,10 +463,7 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-
-                                  React.createElement(ModalTrigger, {modal: React.createElement(OrderModal, {onRemove: self.handleRemoveorder})}, 
-                                  React.createElement("button", {className: "btn btn-info btn-xs pull-right"}, "新增订单")
-                                  )
+                                 React.createElement(OrderModal, {btnName: "新增订单", btnStyle: "btn btn-info btn-xs pull-right"})
                               )
                           )
                       ), 
@@ -554,9 +530,6 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
   loadNext: function() {
     this.loadusers(this.state.nextId);
   },
-  handleRemoveuser: function() {
-    console.log(arguments);
-  },
   handleEdit: function() {
     alert("developing!");
   },
@@ -573,9 +546,7 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
             React.createElement("td", null, user.username), 
             React.createElement("td", null, prettyTime(user.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ModalTrigger, {modal: React.createElement(UserModal, {onRemove: self.handleRemoveuser, user: user, key: user.objectId})}, 
-                  React.createElement("button", {className: "btn btn-success btn-xs"}, "编辑")
-               )
+               React.createElement(UserModal, {user: user, key: user.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -594,10 +565,7 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-
-                                  React.createElement(ModalTrigger, {modal: React.createElement(UserModal, {onRemove: self.handleRemoveuser})}, 
-                                  React.createElement("button", {className: "btn btn-info btn-xs pull-right"}, "新增用户")
-                                  )
+                                 React.createElement(UserModal, {btnName: "新增用户", btnStyle: "btn btn-info btn-xs pull-right"})
                               )
                           )
                       ), 
@@ -655,9 +623,6 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
   loadNext: function() {
     this.loadcategories(this.state.nextId);
   },
-  handleRemovecategory: function() {
-    console.log(arguments);
-  },
   handleEdit: function() {
     alert("developing!");
   },
@@ -674,9 +639,7 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
             React.createElement("td", null, category.name), 
             React.createElement("td", null, prettyTime(category.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ModalTrigger, {modal: React.createElement(CategoryModal, {onRemove: self.handleRemovecategory, category: category, key: category.objectId})}, 
-                  React.createElement("button", {className: "btn btn-success btn-xs"}, "编辑")
-               )
+               React.createElement(CategoryModal, {category: category, key: category.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -695,10 +658,7 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-
-                                  React.createElement(ModalTrigger, {modal: React.createElement(CategoryModal, {onRemove: self.handleRemovecategory})}, 
-                                  React.createElement("button", {className: "btn btn-info btn-xs pull-right"}, "新增分类")
-                                  )
+                                 React.createElement(CategoryModal, {btnName: "新增分类", btnStyle: "btn btn-info btn-xs pull-right"})
                               )
                           )
                       ), 
@@ -756,9 +716,6 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
   loadNext: function() {
     this.loadconfigs(this.state.nextId);
   },
-  handleRemoveconfig: function() {
-    console.log(arguments);
-  },
   handleEdit: function() {
     alert("developing!");
   },
@@ -776,9 +733,7 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
             React.createElement("td", null, config.value), 
             React.createElement("td", null, prettyTime(config.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ModalTrigger, {modal: React.createElement(ConfigModal, {onRemove: self.handleRemoveconfig, config: config, key: config.objectId})}, 
-                  React.createElement("button", {className: "btn btn-success btn-xs"}, "编辑")
-               )
+               React.createElement(ConfigModal, {config: config, key: config.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -797,10 +752,7 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-
-                                  React.createElement(ModalTrigger, {modal: React.createElement(ConfigModal, {onRemove: self.handleRemoveconfig})}, 
-                                  React.createElement("button", {className: "btn btn-info btn-xs pull-right"}, "新增配置")
-                                  )
+                                 React.createElement(ConfigModal, {btnName: "新增配置", btnStyle: "btn btn-info btn-xs pull-right"})
                               )
                           )
                       ), 
@@ -831,8 +783,20 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
 });
 
 var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
+  getInitialState:function() {
+    return {show: false};
+  },
+  close:function(){
+    this.setState({ show: false });
+  },
+
+  open:function(){
+    this.setState({ show: true });
+  },
+
   handleConfirm: function() {
     var shop = {};
+    var self = this;
     shop.name = this.refs.name.getDOMNode().value.trim();
     if (!shop.name) {
       alert("店铺名字不能为空.");
@@ -874,6 +838,7 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
     $('#shop-form').modal('hide');
       console.log(data);
       alert(msgPart + '商家成功！');
+      self.close();
     }).fail(function() {
       alert(msgPart + '商家失败！');
     });
@@ -882,58 +847,69 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
     var shop = this.props.shop || {};
     var titlePart = this.props.key? '编辑' : '新增';
     return (
-      React.createElement("div", {"aria-labelledby": "form", role: "dialog", tabindex: "-1", id: "shop-form", className: "modal fade"}, 
-          React.createElement("div", {className: "modal-dialog"}, 
-              React.createElement("div", {className: "modal-content"}, 
-                  React.createElement("div", {className: "modal-header"}, 
-                      React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", 
-                              "aria-hidden": "true"}, "×"), 
-                      React.createElement("h4", {className: "modal-title"}, titlePart, "商家")
-                  ), 
-                  React.createElement("form", {className: "modal-body form-horizontal cmxform tasi-form"}, 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺名字"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺简称"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "title", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺分类"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "categoryName", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺地址"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺区域"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "area", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "商圈"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "distrinct", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "店铺描述"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "description", type: "text", className: "form-control valid"}))
-                      )
-                  ), 
-                  React.createElement("div", {className: "modal-footer"}, 
-                      React.createElement("button", {"data-dismiss": "modal", className: "btn btn-default", type: "button", id: "btn-cancel"}, "取消 "), 
-                      React.createElement("button", {className: "btn btn-info", type: "button", id: "btn-confirm", "data-data": "add", onClick: this.handleConfirm}, "确定")
-                  )
-              )
-          )
-      )
+      React.createElement("div", null, 
+       React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
+       React.createElement(Modal, {show: this.state.show, onHide: this.close}, 
+         React.createElement(Modal.Header, {closeButton: true}, 
+           React.createElement(Modal.Title, null, titlePart, "商家")
+         ), 
+         React.createElement(Modal.Body, null, 
+           React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺名字"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid", value: shop.name}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺简称"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "title", type: "text", className: "form-control valid", value: shop.title}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺分类"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "categoryName", type: "text", className: "form-control valid", value: shop.categoryName}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺地址"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid", value: shop.address}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺区域"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "area", type: "text", className: "form-control valid", value: shop.area}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "商圈"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "distrinct", type: "text", className: "form-control valid", value: shop.distrinct}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "店铺描述"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "description", type: "text", className: "form-control valid", value: shop.description}))
+             )
+           )
+         ), 
+         React.createElement(Modal.Footer, null, 
+           React.createElement(Button, {onClick: this.close}, "取消"), 
+           React.createElement(Button, {bsStyle: "info", onClick: this.handleConfirm}, "确定")
+         )
+       )
+     )
     );
   }
 });
 
 var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal",
+  getInitialState:function() {
+    return {show: false};
+  },
+  close:function(){
+    this.setState({ show: false });
+  },
+
+  open:function(){
+    this.setState({ show: true });
+  },
+
   handleConfirm: function() {
     var order = {};
+    var self = this;
     order.userId = this.refs.userId.getDOMNode().value.trim();
     order.cost = this.refs.cost.getDOMNode().value.trim();
     order.status = this.refs.status.getDOMNode().value.trim();
@@ -950,6 +926,7 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
     $('#order-form').modal('hide');
       console.log(data);
       alert(msgPart + '订单成功！');
+      self.close();
     }).fail(function() {
       alert(msgPart + '订单失败！');
     });
@@ -958,70 +935,81 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
     var order = this.props.order || {};
     var titlePart = this.props.key? '编辑' : '新增';
     return (
-      React.createElement("div", {"aria-labelledby": "form", role: "dialog", tabindex: "-1", id: "order-form", className: "modal fade"}, 
-          React.createElement("div", {className: "modal-dialog"}, 
-              React.createElement("div", {className: "modal-content"}, 
-                  React.createElement("div", {className: "modal-header"}, 
-                      React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", 
-                              "aria-hidden": "true"}, "×"), 
-                      React.createElement("h4", {className: "modal-title"}, titlePart, "订单")
-                  ), 
-                  React.createElement("form", {className: "modal-body form-horizontal cmxform tasi-form"}, 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "用户ID"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "userId", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "总额"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "cost", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "订单状态"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "status", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "支付方式"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "payMethod", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "消费方式"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "useMethod", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "代金劵ID"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherId", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "代金券金额"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherMoney", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "地址"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "支付宝订单号"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "alipaySN", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "微信订单号"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "wechatSN", type: "text", className: "form-control valid"}))
-                      )
-                  ), 
-                  React.createElement("div", {className: "modal-footer"}, 
-                      React.createElement("button", {"data-dismiss": "modal", className: "btn btn-default", type: "button", id: "btn-cancel"}, "取消 "), 
-                      React.createElement("button", {className: "btn btn-info", type: "button", id: "btn-confirm", "data-data": "add", onClick: this.handleConfirm}, "确定")
-                  )
-              )
-          )
-      )
+      React.createElement("div", null, 
+       React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
+       React.createElement(Modal, {show: this.state.show, onHide: this.close}, 
+         React.createElement(Modal.Header, {closeButton: true}, 
+           React.createElement(Modal.Title, null, titlePart, "订单")
+         ), 
+         React.createElement(Modal.Body, null, 
+           React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "用户ID"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "userId", type: "text", className: "form-control valid", value: order.userId}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "总额"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "cost", type: "text", className: "form-control valid", value: order.cost}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "订单状态"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "status", type: "text", className: "form-control valid", value: order.status}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "支付方式"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "payMethod", type: "text", className: "form-control valid", value: order.payMethod}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "消费方式"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "useMethod", type: "text", className: "form-control valid", value: order.useMethod}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "代金劵ID"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherId", type: "text", className: "form-control valid", value: order.voucherId}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "代金券金额"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherMoney", type: "text", className: "form-control valid", value: order.voucherMoney}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "地址"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid", value: order.address}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "支付宝订单号"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "alipaySN", type: "text", className: "form-control valid", value: order.alipaySN}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "微信订单号"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "wechatSN", type: "text", className: "form-control valid", value: order.wechatSN}))
+             )
+           )
+         ), 
+         React.createElement(Modal.Footer, null, 
+           React.createElement(Button, {onClick: this.close}, "取消"), 
+           React.createElement(Button, {bsStyle: "info", onClick: this.handleConfirm}, "确定")
+         )
+       )
+     )
     );
   }
 });
 
 var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
+  getInitialState:function() {
+    return {show: false};
+  },
+  close:function(){
+    this.setState({ show: false });
+  },
+
+  open:function(){
+    this.setState({ show: true });
+  },
+
   handleConfirm: function() {
     var user = {};
+    var self = this;
     user.username = this.refs.username.getDOMNode().value.trim();
     if (!user.username) {
       alert("用户名不能为空.");
@@ -1033,6 +1021,7 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
     $('#user-form').modal('hide');
       console.log(data);
       alert(msgPart + '用户成功！');
+      self.close();
     }).fail(function() {
       alert(msgPart + '用户失败！');
     });
@@ -1041,34 +1030,45 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
     var user = this.props.user || {};
     var titlePart = this.props.key? '编辑' : '新增';
     return (
-      React.createElement("div", {"aria-labelledby": "form", role: "dialog", tabindex: "-1", id: "user-form", className: "modal fade"}, 
-          React.createElement("div", {className: "modal-dialog"}, 
-              React.createElement("div", {className: "modal-content"}, 
-                  React.createElement("div", {className: "modal-header"}, 
-                      React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", 
-                              "aria-hidden": "true"}, "×"), 
-                      React.createElement("h4", {className: "modal-title"}, titlePart, "用户")
-                  ), 
-                  React.createElement("form", {className: "modal-body form-horizontal cmxform tasi-form"}, 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "用户名"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "username", type: "text", className: "form-control valid"}))
-                      )
-                  ), 
-                  React.createElement("div", {className: "modal-footer"}, 
-                      React.createElement("button", {"data-dismiss": "modal", className: "btn btn-default", type: "button", id: "btn-cancel"}, "取消 "), 
-                      React.createElement("button", {className: "btn btn-info", type: "button", id: "btn-confirm", "data-data": "add", onClick: this.handleConfirm}, "确定")
-                  )
-              )
-          )
-      )
+      React.createElement("div", null, 
+       React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
+       React.createElement(Modal, {show: this.state.show, onHide: this.close}, 
+         React.createElement(Modal.Header, {closeButton: true}, 
+           React.createElement(Modal.Title, null, titlePart, "用户")
+         ), 
+         React.createElement(Modal.Body, null, 
+           React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "用户名"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "username", type: "text", className: "form-control valid", value: user.username}))
+             )
+           )
+         ), 
+         React.createElement(Modal.Footer, null, 
+           React.createElement(Button, {onClick: this.close}, "取消"), 
+           React.createElement(Button, {bsStyle: "info", onClick: this.handleConfirm}, "确定")
+         )
+       )
+     )
     );
   }
 });
 
 var CategoryModal = exports.CategoryModal= React.createClass({displayName: "CategoryModal",
+  getInitialState:function() {
+    return {show: false};
+  },
+  close:function(){
+    this.setState({ show: false });
+  },
+
+  open:function(){
+    this.setState({ show: true });
+  },
+
   handleConfirm: function() {
     var category = {};
+    var self = this;
     category.name = this.refs.name.getDOMNode().value.trim();
     if (!category.name) {
       alert("分类不能为空.");
@@ -1080,6 +1080,7 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
     $('#category-form').modal('hide');
       console.log(data);
       alert(msgPart + '分类成功！');
+      self.close();
     }).fail(function() {
       alert(msgPart + '分类失败！');
     });
@@ -1088,34 +1089,45 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
     var category = this.props.category || {};
     var titlePart = this.props.key? '编辑' : '新增';
     return (
-      React.createElement("div", {"aria-labelledby": "form", role: "dialog", tabindex: "-1", id: "category-form", className: "modal fade"}, 
-          React.createElement("div", {className: "modal-dialog"}, 
-              React.createElement("div", {className: "modal-content"}, 
-                  React.createElement("div", {className: "modal-header"}, 
-                      React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", 
-                              "aria-hidden": "true"}, "×"), 
-                      React.createElement("h4", {className: "modal-title"}, titlePart, "分类")
-                  ), 
-                  React.createElement("form", {className: "modal-body form-horizontal cmxform tasi-form"}, 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "分类"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid"}))
-                      )
-                  ), 
-                  React.createElement("div", {className: "modal-footer"}, 
-                      React.createElement("button", {"data-dismiss": "modal", className: "btn btn-default", type: "button", id: "btn-cancel"}, "取消 "), 
-                      React.createElement("button", {className: "btn btn-info", type: "button", id: "btn-confirm", "data-data": "add", onClick: this.handleConfirm}, "确定")
-                  )
-              )
-          )
-      )
+      React.createElement("div", null, 
+       React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
+       React.createElement(Modal, {show: this.state.show, onHide: this.close}, 
+         React.createElement(Modal.Header, {closeButton: true}, 
+           React.createElement(Modal.Title, null, titlePart, "分类")
+         ), 
+         React.createElement(Modal.Body, null, 
+           React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "分类"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid", value: category.name}))
+             )
+           )
+         ), 
+         React.createElement(Modal.Footer, null, 
+           React.createElement(Button, {onClick: this.close}, "取消"), 
+           React.createElement(Button, {bsStyle: "info", onClick: this.handleConfirm}, "确定")
+         )
+       )
+     )
     );
   }
 });
 
 var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigModal",
+  getInitialState:function() {
+    return {show: false};
+  },
+  close:function(){
+    this.setState({ show: false });
+  },
+
+  open:function(){
+    this.setState({ show: true });
+  },
+
   handleConfirm: function() {
     var config = {};
+    var self = this;
     config.key = this.refs.key.getDOMNode().value.trim();
     if (!config.key) {
       alert("key不能为空.");
@@ -1132,6 +1144,7 @@ var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigMo
     $('#config-form').modal('hide');
       console.log(data);
       alert(msgPart + '配置成功！');
+      self.close();
     }).fail(function() {
       alert(msgPart + '配置失败！');
     });
@@ -1140,31 +1153,30 @@ var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigMo
     var config = this.props.config || {};
     var titlePart = this.props.key? '编辑' : '新增';
     return (
-      React.createElement("div", {"aria-labelledby": "form", role: "dialog", tabindex: "-1", id: "config-form", className: "modal fade"}, 
-          React.createElement("div", {className: "modal-dialog"}, 
-              React.createElement("div", {className: "modal-content"}, 
-                  React.createElement("div", {className: "modal-header"}, 
-                      React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", 
-                              "aria-hidden": "true"}, "×"), 
-                      React.createElement("h4", {className: "modal-title"}, titlePart, "配置")
-                  ), 
-                  React.createElement("form", {className: "modal-body form-horizontal cmxform tasi-form"}, 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "key"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "key", type: "text", className: "form-control valid"}))
-                      ), 
-                      React.createElement("div", {className: "form-group"}, 
-                          React.createElement("label", {className: "control-label col-lg-3"}, "value"), 
-                          React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "value", type: "text", className: "form-control valid"}))
-                      )
-                  ), 
-                  React.createElement("div", {className: "modal-footer"}, 
-                      React.createElement("button", {"data-dismiss": "modal", className: "btn btn-default", type: "button", id: "btn-cancel"}, "取消 "), 
-                      React.createElement("button", {className: "btn btn-info", type: "button", id: "btn-confirm", "data-data": "add", onClick: this.handleConfirm}, "确定")
-                  )
-              )
-          )
-      )
+      React.createElement("div", null, 
+       React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
+       React.createElement(Modal, {show: this.state.show, onHide: this.close}, 
+         React.createElement(Modal.Header, {closeButton: true}, 
+           React.createElement(Modal.Title, null, titlePart, "配置")
+         ), 
+         React.createElement(Modal.Body, null, 
+           React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "key"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "key", type: "text", className: "form-control valid", value: config.key}))
+             ), 
+             React.createElement("div", {className: "form-group"}, 
+               React.createElement("label", {className: "control-label col-lg-3"}, "value"), 
+               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "value", type: "text", className: "form-control valid", value: config.value}))
+             )
+           )
+         ), 
+         React.createElement(Modal.Footer, null, 
+           React.createElement(Button, {onClick: this.close}, "取消"), 
+           React.createElement(Button, {bsStyle: "info", onClick: this.handleConfirm}, "确定")
+         )
+       )
+     )
     );
   }
 });
