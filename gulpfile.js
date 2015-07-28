@@ -7,6 +7,7 @@ var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
 var exec = require('child_process').exec;
+var es6ify = require('es6ify');
 
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['public/app', 'app/views.js'], {dot: true}));
@@ -24,8 +25,12 @@ gulp.task('dna', function (cb) {
 
 // Build app.js
 gulp.task('app', ['dna'], function() {
-  gulp.src('app/main.js', {read: false})
-    .pipe($.browserify({insertGlobals: true, exclude: 'localStorage', transform: ['reactify', 'es6ify']}))
+  gulp.src('app/main.jsx', {read: false})
+    .pipe($.browserify({
+      insertGlobals: true,
+      exclude: 'localStorage',
+      transform: ['reactify', es6ify.configure(/.jsx?/)]
+    }))
     .pipe($.rename('app.js'))
     .pipe(gulp.dest('./public/app'));
 });
