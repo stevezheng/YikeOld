@@ -31,7 +31,8 @@ gulp.task('app', ['dna'], function() {
       exclude: 'localStorage',
       transform: [function(filename){
         return reactify(filename, {es6: true})
-      }]
+      }],
+      extensions: ['.js', '.jsx']
     }))
     .pipe($.rename('app.js'))
     .pipe(gulp.dest('./public/app'));
