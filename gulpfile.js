@@ -18,7 +18,7 @@ gulp.task('default', ['clean'], function (cb) {
 });
 
 gulp.task('dna', function (cb) {
-  exec('node_modules/.bin/ribosome.js dna/views.js.dna > app/views.js', function (err, stdout, stderr) {
+  exec('node_modules/.bin/ribosome.js dna/views.js.dna > app/views.jsx', function (err, stdout, stderr) {
     cb(err);
   });
 });
