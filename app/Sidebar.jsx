@@ -36,6 +36,9 @@ class Sidebar extends React.Component{
                         <span>用户中心</span>
                     </a>
                     <ul className="sub">
+                      <NavItemLink to="users">
+                        <span>用户管理</span>
+                      </NavItemLink>
                         <li><a  href="/admin/#user">用户管理</a></li>
                         <li><a  href="/admin/#user-point">积分管理</a></li>
                         <li><a  href="/admin/#user-money">预存款管理</a></li>
@@ -49,7 +52,9 @@ class Sidebar extends React.Component{
                         <span>商家中心</span>
                     </a>
                     <ul className="sub">
-                        <li><a  href="/admin/#shop">商家管理</a></li>
+                      <NavItemLink to="shops">
+                        商家管理
+                      </NavItemLink>
                     </ul>
                 </li>
 
@@ -83,7 +88,9 @@ class Sidebar extends React.Component{
                         <span>交易中心</span>
                     </a>
                     <ul className="sub">
-                        <li><a  href="/admin/#order">订单管理</a></li>
+                        <NavItemLink to="orders">
+                          订单管理
+                        </NavItemLink>
                         <li><a  href="/admin/#order-cancel">退款管理</a></li>
                         <li><a  href="/admin/#order-comment">评价管理</a></li>
                         <li><a  href="/admin/#order-ask">咨询管理</a></li>
