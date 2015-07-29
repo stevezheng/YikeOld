@@ -166,7 +166,26 @@ function generateModal(options) {
 .         <Modal.Body>
 .           <form className="form-horizontal cmxform tasi-form">
   fields.forEach(function(field) {
-.               <Input ref="@{field.name}" type="@{field.type || 'text'}" value={@{propName}.@{field.name}} label="@{field.desc}" labelClassName="col-lg-3" className="valid" wrapperClassName="col-lg-4" />
+.             <Input
+.                    ref="@{field.name}"
+.                    type="@{field.type || 'text'}"
+.                    value={@{propName}.@{field.name}}
+.                    label="@{field.desc}"
+.                    labelClassName="col-lg-3"
+.                    className="valid"
+.                    wrapperClassName="col-lg-4"
+.                    placeholder="@{field.placeholder || ''}"
+.                    @{field.attrs || ''}
+    if (field.type === 'select') {
+.                    >
+        field.options.forEach(function(option) {
+.               <option value="@{option.value}"> @{option.desc} </option>
+        });
+.             </Input>
+
+    } else {
+.                    />
+    }
   });
 .           </form>
 .         </Modal.Body>
