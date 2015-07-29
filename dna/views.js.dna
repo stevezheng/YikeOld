@@ -117,10 +117,21 @@ function generateModal(options) {
   var name = options.name;
   var propName = options.prop;
   var fields = options.fields;
+  fields.forEach(function(field) {
+    field.realName = field.realName || field.name;
+    field.realNames = field.realNames || field.realName + 's';
+  });
   var uri = options.uri;
 .var @{className} = exports.@{className}= React.createClass({
 .  getInitialState() {
-.    return {show: false};
+.    return {
+.      show: false,
+  fields.forEach(function(field) {
+    if (field.needLoad) {
+.      @{field.realNames}: [],
+    }
+  });
+.    };
 .  },
 .  close(){
 .    this.setState({ show: false });
@@ -153,9 +164,44 @@ function generateModal(options) {
 .      alert(msgPart + '@{name}失败！');
 .    });
 .  },
+  fields.forEach(function(field) {
+    if (field.needLoad) {
+      var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
+        return m.toUpperCase();
+      }).replace(/[-_]/g, '');
+.  load@{fieldName}: function() {
+.    var self = this;
+.    $.get("@{field.uri}", function(data) {
+.      self.setState(data);
+.    }).fail(function() {
+.      alert("获取@{field.desc}失败!")
+.    });
+.  },
+    }
+  });
+.  componentDidMount: function() {
+  fields.forEach(function(field) {
+    if (field.needLoad) {
+      var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
+        return m.toUpperCase();
+      }).replace(/[-_]/g, '');
+.    this.load@{fieldName}();
+    }
+  });
+.  },
 .  render: function() {
 .    var @{propName} = this.props.@{propName} || {};
 .    var titlePart = this.props.key? '编辑' : '新增';
+  fields.forEach(function(field) {
+    if (field.needLoad) {
+.    var @{field.realNames} = this.state.@{field.realNames}.map(function(@{field.realName}) {
+      if (field.eval) {
+        field.eval(field);
+      }
+.    });
+    }
+  });
+.
 .    return (
 .      <div>
 .       <button className={this.props.btnStyle} onClick={this.open}> {this.props.btnName} </button>
@@ -178,9 +224,13 @@ function generateModal(options) {
 .                    @{field.attrs || ''}
     if (field.type === 'select') {
 .                    >
+      if (field.needLoad) {
+.               {@{field.realNames}}
+      } else {
         field.options.forEach(function(option) {
 .               <option value="@{option.value}"> @{option.desc} </option>
         });
+      }
 .             </Input>
 
     } else {
@@ -318,7 +368,12 @@ generateModal({
   fields: [
     {name: 'name',         desc: '店铺名字', required: true},
     {name: 'title',        desc: '店铺简称', required: true},
-    {name: 'categoryName', desc: '店铺分类', required: true},
+    {name: 'categoryId', desc: '店铺分类', type: 'select', realNames: 'categories', realName: 'category',
+      needLoad: true, eval: function(field) {
+.       <option value={@{field.realName}.objectId}> {@{field.realName}.name} </option>
+      },
+      uri: '/api/categories/'
+    },
     {name: 'address',      desc: '店铺地址', required: true},
     {name: 'area',         desc: '店铺区域', required: true},
     {name: 'distrinct',    desc: '商圈', required: true},
