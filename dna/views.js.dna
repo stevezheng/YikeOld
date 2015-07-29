@@ -156,7 +156,6 @@ function generateModal(options) {
 .    var uri = this.props.key ? "@{uri}" + this.props.key: "@{uri}";
 .    var msgPart = old_@{propName}.id ? '修改': '添加';
 .    $.post(uri, @{propName}, function(data) {
-.    $('#@{propName}-form').modal('hide');
 .      console.log(data);
 .      alert(msgPart + '@{name}成功！');
 .      self.close();
