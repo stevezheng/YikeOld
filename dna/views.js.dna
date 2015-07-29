@@ -83,7 +83,7 @@ fields.forEach(function(field) {
 .                              </p>
 .                          </div>
 .                      </div>
-.                      <table className="table">
+.                      <Table>
 .                          <thead>
 .                          <tr>
 .                              <th>@{name}Id</th>
@@ -95,7 +95,7 @@ fields.forEach(function(field) {
 .                          </tr>
 .                          </thead>
 .                          {@{propNames}}
-.                      </table>
+.                      </Table>
 .                      <div className="text-center">
 .                          <ul className="pagination">
 .                              <li><a href="javascript:;;;" onClick={this.loadPrev}>«</a></li>
@@ -134,7 +134,7 @@ function generateModal(options) {
 .    var @{propName} = {};
 .    var self = this;
   fields.forEach(function(field) {
-.    @{propName}.@{field.name} = this.refs.@{field.name}.getDOMNode().value.trim();
+.    @{propName}.@{field.name} = this.refs.@{field.name}.getValue().trim();
     if (field.required === true) {
 .    if (!@{propName}.@{field.name}) {
 .      alert("@{field.desc}不能为空.");
@@ -166,11 +166,7 @@ function generateModal(options) {
 .         <Modal.Body>
 .           <form className="form-horizontal cmxform tasi-form">
   fields.forEach(function(field) {
-.             <div className="form-group">
-.               <label className="control-label col-lg-3">@{field.desc}</label>
-.               <div className="col-lg-4"><input ref="@{field.name}" type="@{field.type || 'text'}" className="form-control valid" value={@{propName}.@{field.name}} /></div>
-.             </div>
-
+.               <Input ref="@{field.name}" type="@{field.type || 'text'}" value={@{propName}.@{field.name}} label="@{field.desc}" labelClassName="col-lg-3" className="valid" wrapperClassName="col-lg-4" />
   });
 .           </form>
 .         </Modal.Body>
@@ -188,7 +184,7 @@ function generateModal(options) {
 .'use strict';
 .var React = require('react');
 .var ReactBootstrap = require('react-bootstrap');
-.var {Modal, Button} = ReactBootstrap;
+.var {Modal, Button, Table, Input} = ReactBootstrap;
 .
 .function prettyTime(timestamp) {
 .  var createdDate = new Date(timestamp);
