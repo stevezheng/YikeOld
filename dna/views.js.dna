@@ -7,13 +7,22 @@ function generateList(options) {
   var propNames = options.props || propName + 's';
   var title = options.title;
   var fields = options.fields || [];
+  var needLoadFields = options.needLoadFields || [];
   var name = options.name;
   var uri = options.uri;
   var modal = options.modal || 'div';
 
 .var @{className} = exports.@{className} = React.createClass({
 .  getInitialState: function() {
-.    return {@{propNames}: [], limit: 10, prevId: '', nextId: ''};
+.    return {
+.      @{propNames}: [],
+.      limit: 10,
+.      prevId: '',
+.      nextId: '',
+  needLoadFields.forEach(function(field) {
+.      @{field.realNames}: [],
+  });
+.    };
 .  },
 .  load@{propNames}: function(max) {
 .    var self = this;
@@ -31,8 +40,27 @@ function generateList(options) {
 .      alert('当前用户没有权限查看');
 .    });
 .  },
+  needLoadFields.forEach(function(field) {
+    var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
+      return m.toUpperCase();
+    }).replace(/[-_]/g, '');
+.  load@{fieldName}: function() {
+.    var self = this;
+.    $.get("@{field.uri}", function(data) {
+.      self.setState(data);
+.    }).fail(function() {
+.      alert("获取@{field.desc}失败!")
+.    });
+.  },
+  });
 .  componentDidMount: function() {
-.    this.load@{propNames}()
+.    this.load@{propNames}();
+  needLoadFields.forEach(function(field) {
+    var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
+      return m.toUpperCase();
+    }).replace(/[-_]/g, '');
+.    this.load@{fieldName}();
+  });
 .  },
 .  loadPrev: function() {
 .    this.load@{propNames}(this.state.prevId);
@@ -60,7 +88,12 @@ fields.forEach(function(field) {
 
 .            <td>{prettyTime(@{propName}.createdAt)}</td>
 .            <td>
-.               <@{modal} @{propName}={@{propName}} key={@{propName}.objectId} btnName="编辑" btnStyle="btn btn-success btn-xs"/>
+.               <@{modal} @{propName}={@{propName}} key={@{propName}.objectId}
+.
+  needLoadFields.forEach(function(field) {
+.                 @{field.realNames}={self.state.@{field.realNames}}
+  });
+.                 btnName="编辑" btnStyle="btn btn-success btn-xs"/>
 .            </td>
 .        </tr>
 .      );
@@ -79,7 +112,11 @@ fields.forEach(function(field) {
 .                              <p>
 .                                  ID: <input type="text" style={{width: 50}} /> &nbsp;
 .                                  <button className="btn btn-success btn-xs" onClick={this.handleSearch}>查询</button>
-.                                 <@{modal} btnName="新增@{name}" btnStyle="btn btn-info btn-xs pull-right"/>
+.                                 <@{modal} btnName="新增@{name}" btnStyle="btn btn-info btn-xs pull-right"
+  needLoadFields.forEach(function(field) {
+.                                   @{field.realNames}={this.state.@{field.realNames}}
+  });
+.                                   />
 .                              </p>
 .                          </div>
 .                      </div>
@@ -126,11 +163,6 @@ function generateModal(options) {
 .  getInitialState() {
 .    return {
 .      show: false,
-  fields.forEach(function(field) {
-    if (field.needLoad) {
-.      @{field.realNames}: [],
-    }
-  });
 .    };
 .  },
 .  close(){
@@ -153,8 +185,9 @@ function generateModal(options) {
 .    }
     }
   });
-.    var uri = this.props.key ? "@{uri}" + this.props.key: "@{uri}";
-.    var msgPart = old_@{propName}.id ? '修改': '添加';
+.    var old_@{propName} = this.props.@{propName} || {};
+.    var uri = old_@{propName}.objectId ? "@{uri}" + old_@{propName}.objectId: "@{uri}";
+.    var msgPart = old_@{propName}.objectId ? '修改': '添加';
 .    $.post(uri, @{propName}, function(data) {
 .      console.log(data);
 .      alert(msgPart + '@{name}成功！');
@@ -163,37 +196,14 @@ function generateModal(options) {
 .      alert(msgPart + '@{name}失败！');
 .    });
 .  },
-  fields.forEach(function(field) {
-    if (field.needLoad) {
-      var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
-        return m.toUpperCase();
-      }).replace(/[-_]/g, '');
-.  load@{fieldName}: function() {
-.    var self = this;
-.    $.get("@{field.uri}", function(data) {
-.      self.setState(data);
-.    }).fail(function() {
-.      alert("获取@{field.desc}失败!")
-.    });
-.  },
-    }
-  });
 .  componentDidMount: function() {
-  fields.forEach(function(field) {
-    if (field.needLoad) {
-      var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
-        return m.toUpperCase();
-      }).replace(/[-_]/g, '');
-.    this.load@{fieldName}();
-    }
-  });
 .  },
 .  render: function() {
 .    var @{propName} = this.props.@{propName} || {};
-.    var titlePart = this.props.key? '编辑' : '新增';
+.    var titlePart = @{propName}.objectId? '编辑' : '新增';
   fields.forEach(function(field) {
     if (field.needLoad) {
-.    var @{field.realNames} = this.state.@{field.realNames}.map(function(@{field.realName}) {
+.    var @{field.realNames} = this.props.@{field.realNames}.map(function(@{field.realName}) {
       if (field.eval) {
         field.eval(field);
       }
@@ -288,7 +298,10 @@ generateList({
   ],
   name: '商家',
   uri: '/api/shops/',
-  modal: 'ShopModal'
+  modal: 'ShopModal',
+  needLoadFields: [
+    {realNames: 'categories', realName: 'category', uri: '/api/categories/', desc: '店铺分类'},
+  ]
 });
 
 .
@@ -369,9 +382,8 @@ generateModal({
     {name: 'title',        desc: '店铺简称', required: true},
     {name: 'categoryId', desc: '店铺分类', type: 'select', realNames: 'categories', realName: 'category',
       needLoad: true, eval: function(field) {
-.       <option value={@{field.realName}.objectId}> {@{field.realName}.name} </option>
+.       return <option value={@{field.realName}.objectId}> {@{field.realName}.name} </option>
       },
-      uri: '/api/categories/'
     },
     {name: 'address',      desc: '店铺地址', required: true},
     {name: 'area',         desc: '店铺区域', required: true},
