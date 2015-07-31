@@ -1,6 +1,12 @@
 'use strict';
 var models = require('../lib/models');
 
+function firstUpperCase(name) {
+    return name.replace(/^[a-z]|[_-][a-z]/g, function(m){
+      return m.toUpperCase();
+    }).replace(/[-_]/g, '');
+}
+
 function generateList(options) {
   var className = options.className;
   var propName = options.prop;
@@ -24,7 +30,7 @@ function generateList(options) {
   });
 .    };
 .  },
-.  load@{propNames}: function(max) {
+.  load@{firstUpperCase(propNames)}: function(max) {
 .    var self = this;
 .    var limit = this.state.limit;
 .    var prevId = this.state.@{propNames}[0];
@@ -41,9 +47,7 @@ function generateList(options) {
 .    });
 .  },
   needLoadFields.forEach(function(field) {
-    var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
-      return m.toUpperCase();
-    }).replace(/[-_]/g, '');
+    var fieldName = firstUpperCase(field.realNames);
 .  load@{fieldName}: function() {
 .    var self = this;
 .    $.get("@{field.uri}", function(data) {
@@ -54,11 +58,9 @@ function generateList(options) {
 .  },
   });
 .  componentDidMount: function() {
-.    this.load@{propNames}();
+.    this.load@{firstUpperCase(propNames)}();
   needLoadFields.forEach(function(field) {
-    var fieldName = field.realNames.replace(/^[a-z]|[_-][a-z]/g, function(m){
-      return m.toUpperCase();
-    }).replace(/[-_]/g, '');
+    var fieldName = firstUpperCase(field.realNames);
 .    this.load@{fieldName}();
   });
 .  },
