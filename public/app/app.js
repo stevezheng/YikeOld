@@ -51,7 +51,7 @@ module.exports = Dashboard;
 'use strict';
 var React = require('react');
 
-var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Header[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Header.prototype=Object.create(____SuperProtoOf____Class1);Header.prototype.constructor=Header;Header.__superConstructor__=____Class1;function Header(){if(____Class1!==null){____Class1.apply(this,arguments);}}
+var ____Class2=React.Component;for(var ____Class2____Key in ____Class2){if(____Class2.hasOwnProperty(____Class2____Key)){Header[____Class2____Key]=____Class2[____Class2____Key];}}var ____SuperProtoOf____Class2=____Class2===null?null:____Class2.prototype;Header.prototype=Object.create(____SuperProtoOf____Class2);Header.prototype.constructor=Header;Header.__superConstructor__=____Class2;function Header(){if(____Class2!==null){____Class2.apply(this,arguments);}}
   Object.defineProperty(Header.prototype,"render",{writable:true,configurable:true,value:function() {
     return (
       React.createElement("header", {className: "header white-bg"}, 
@@ -90,7 +90,7 @@ var React = require('react');
 var ReactRouterBootstrap = require('react-router-bootstrap');
 var $__0=  ReactRouterBootstrap,NavItemLink=$__0.NavItemLink;
 
-var ____Class2=React.Component;for(var ____Class2____Key in ____Class2){if(____Class2.hasOwnProperty(____Class2____Key)){Sidebar[____Class2____Key]=____Class2[____Class2____Key];}}var ____SuperProtoOf____Class2=____Class2===null?null:____Class2.prototype;Sidebar.prototype=Object.create(____SuperProtoOf____Class2);Sidebar.prototype.constructor=Sidebar;Sidebar.__superConstructor__=____Class2;function Sidebar(){if(____Class2!==null){____Class2.apply(this,arguments);}}
+var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Sidebar[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Sidebar.prototype=Object.create(____SuperProtoOf____Class1);Sidebar.prototype.constructor=Sidebar;Sidebar.__superConstructor__=____Class1;function Sidebar(){if(____Class1!==null){____Class1.apply(this,arguments);}}
   Object.defineProperty(Sidebar.prototype,"render",{writable:true,configurable:true,value:function() {
     return (
       React.createElement("aside", null, 
@@ -265,7 +265,7 @@ ReactRouter.run(routes, function(Handler, state)  {
 'use strict';
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
-var $__0=   ReactBootstrap,Modal=$__0.Modal,Button=$__0.Button;
+var $__0=     ReactBootstrap,Modal=$__0.Modal,Button=$__0.Button,Table=$__0.Table,Input=$__0.Input;
 
 function prettyTime(timestamp) {
   var createdDate = new Date(timestamp);
@@ -287,9 +287,15 @@ function prettyTime(timestamp) {
 }
 var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
   getInitialState: function() {
-    return {shops: [], limit: 10, prevId: '', nextId: ''};
+    return {
+      shops: [],
+      limit: 10,
+      prevId: '',
+      nextId: '',
+      categories: [],
+    };
   },
-  loadshops: function(max) {
+  loadShops: function(max) {
     var self = this;
     var limit = this.state.limit;
     var prevId = this.state.shops[0];
@@ -305,8 +311,17 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
       alert('当前用户没有权限查看');
     });
   },
+  loadCategories: function() {
+    var self = this;
+    $.get("/api/categories/", function(data) {
+      self.setState(data);
+    }).fail(function() {
+      alert("获取店铺分类失败!")
+    });
+  },
   componentDidMount: function() {
-    this.loadshops()
+    this.loadShops();
+    this.loadCategories();
   },
   loadPrev: function() {
     this.loadshops(this.state.prevId);
@@ -336,7 +351,10 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
             React.createElement("td", null, shop.description), 
             React.createElement("td", null, prettyTime(shop.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ShopModal, {shop: shop, key: shop.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
+               React.createElement(ShopModal, {shop: shop, key: shop.objectId, 
+
+                 categories: self.state.categories, 
+                 btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -355,11 +373,13 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-                                 React.createElement(ShopModal, {btnName: "新增商家", btnStyle: "btn btn-info btn-xs pull-right"})
+                                 React.createElement(ShopModal, {btnName: "新增商家", btnStyle: "btn btn-info btn-xs pull-right", 
+                                   categories: this.state.categories}
+                                   )
                               )
                           )
                       ), 
-                      React.createElement("table", {className: "table"}, 
+                      React.createElement(Table, null, 
                           React.createElement("thead", null, 
                           React.createElement("tr", null, 
                               React.createElement("th", null, "商家Id"), 
@@ -392,9 +412,14 @@ var ShopList = exports.ShopList = React.createClass({displayName: "ShopList",
 
 var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
   getInitialState: function() {
-    return {orders: [], limit: 10, prevId: '', nextId: ''};
+    return {
+      orders: [],
+      limit: 10,
+      prevId: '',
+      nextId: '',
+    };
   },
-  loadorders: function(max) {
+  loadOrders: function(max) {
     var self = this;
     var limit = this.state.limit;
     var prevId = this.state.orders[0];
@@ -411,7 +436,7 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
     });
   },
   componentDidMount: function() {
-    this.loadorders()
+    this.loadOrders();
   },
   loadPrev: function() {
     this.loadorders(this.state.prevId);
@@ -444,7 +469,9 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
             React.createElement("td", null, order.wechatSN), 
             React.createElement("td", null, prettyTime(order.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(OrderModal, {order: order, key: order.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
+               React.createElement(OrderModal, {order: order, key: order.objectId, 
+
+                 btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -463,11 +490,12 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-                                 React.createElement(OrderModal, {btnName: "新增订单", btnStyle: "btn btn-info btn-xs pull-right"})
+                                 React.createElement(OrderModal, {btnName: "新增订单", btnStyle: "btn btn-info btn-xs pull-right"}
+                                   )
                               )
                           )
                       ), 
-                      React.createElement("table", {className: "table"}, 
+                      React.createElement(Table, null, 
                           React.createElement("thead", null, 
                           React.createElement("tr", null, 
                               React.createElement("th", null, "订单Id"), 
@@ -503,9 +531,14 @@ var OrderList = exports.OrderList = React.createClass({displayName: "OrderList",
 
 var UserList = exports.UserList = React.createClass({displayName: "UserList",
   getInitialState: function() {
-    return {users: [], limit: 10, prevId: '', nextId: ''};
+    return {
+      users: [],
+      limit: 10,
+      prevId: '',
+      nextId: '',
+    };
   },
-  loadusers: function(max) {
+  loadUsers: function(max) {
     var self = this;
     var limit = this.state.limit;
     var prevId = this.state.users[0];
@@ -522,7 +555,7 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
     });
   },
   componentDidMount: function() {
-    this.loadusers()
+    this.loadUsers();
   },
   loadPrev: function() {
     this.loadusers(this.state.prevId);
@@ -546,7 +579,9 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
             React.createElement("td", null, user.username), 
             React.createElement("td", null, prettyTime(user.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(UserModal, {user: user, key: user.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
+               React.createElement(UserModal, {user: user, key: user.objectId, 
+
+                 btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -565,11 +600,12 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-                                 React.createElement(UserModal, {btnName: "新增用户", btnStyle: "btn btn-info btn-xs pull-right"})
+                                 React.createElement(UserModal, {btnName: "新增用户", btnStyle: "btn btn-info btn-xs pull-right"}
+                                   )
                               )
                           )
                       ), 
-                      React.createElement("table", {className: "table"}, 
+                      React.createElement(Table, null, 
                           React.createElement("thead", null, 
                           React.createElement("tr", null, 
                               React.createElement("th", null, "用户Id"), 
@@ -596,9 +632,14 @@ var UserList = exports.UserList = React.createClass({displayName: "UserList",
 
 var CategoryList = exports.CategoryList = React.createClass({displayName: "CategoryList",
   getInitialState: function() {
-    return {categories: [], limit: 10, prevId: '', nextId: ''};
+    return {
+      categories: [],
+      limit: 10,
+      prevId: '',
+      nextId: '',
+    };
   },
-  loadcategories: function(max) {
+  loadCategories: function(max) {
     var self = this;
     var limit = this.state.limit;
     var prevId = this.state.categories[0];
@@ -615,7 +656,7 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
     });
   },
   componentDidMount: function() {
-    this.loadcategories()
+    this.loadCategories();
   },
   loadPrev: function() {
     this.loadcategories(this.state.prevId);
@@ -639,7 +680,9 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
             React.createElement("td", null, category.name), 
             React.createElement("td", null, prettyTime(category.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(CategoryModal, {category: category, key: category.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
+               React.createElement(CategoryModal, {category: category, key: category.objectId, 
+
+                 btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -658,11 +701,12 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-                                 React.createElement(CategoryModal, {btnName: "新增分类", btnStyle: "btn btn-info btn-xs pull-right"})
+                                 React.createElement(CategoryModal, {btnName: "新增分类", btnStyle: "btn btn-info btn-xs pull-right"}
+                                   )
                               )
                           )
                       ), 
-                      React.createElement("table", {className: "table"}, 
+                      React.createElement(Table, null, 
                           React.createElement("thead", null, 
                           React.createElement("tr", null, 
                               React.createElement("th", null, "分类Id"), 
@@ -689,9 +733,14 @@ var CategoryList = exports.CategoryList = React.createClass({displayName: "Categ
 
 var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigList",
   getInitialState: function() {
-    return {configs: [], limit: 10, prevId: '', nextId: ''};
+    return {
+      configs: [],
+      limit: 10,
+      prevId: '',
+      nextId: '',
+    };
   },
-  loadconfigs: function(max) {
+  loadConfigs: function(max) {
     var self = this;
     var limit = this.state.limit;
     var prevId = this.state.configs[0];
@@ -708,7 +757,7 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
     });
   },
   componentDidMount: function() {
-    this.loadconfigs()
+    this.loadConfigs();
   },
   loadPrev: function() {
     this.loadconfigs(this.state.prevId);
@@ -733,7 +782,9 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
             React.createElement("td", null, config.value), 
             React.createElement("td", null, prettyTime(config.createdAt)), 
             React.createElement("td", null, 
-               React.createElement(ConfigModal, {config: config, key: config.objectId, btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
+               React.createElement(ConfigModal, {config: config, key: config.objectId, 
+
+                 btnName: "编辑", btnStyle: "btn btn-success btn-xs"})
             )
         )
       );
@@ -752,11 +803,12 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
                               React.createElement("p", null, 
                                   "ID: ", React.createElement("input", {type: "text", style: {width: 50}}), "  ", 
                                   React.createElement("button", {className: "btn btn-success btn-xs", onClick: this.handleSearch}, "查询"), 
-                                 React.createElement(ConfigModal, {btnName: "新增配置", btnStyle: "btn btn-info btn-xs pull-right"})
+                                 React.createElement(ConfigModal, {btnName: "新增配置", btnStyle: "btn btn-info btn-xs pull-right"}
+                                   )
                               )
                           )
                       ), 
-                      React.createElement("table", {className: "table"}, 
+                      React.createElement(Table, null, 
                           React.createElement("thead", null, 
                           React.createElement("tr", null, 
                               React.createElement("th", null, "配置Id"), 
@@ -784,7 +836,9 @@ var ConfigList = exports.ConfigList = React.createClass({displayName: "ConfigLis
 
 var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
   getInitialState:function() {
-    return {show: false};
+    return {
+      show: false,
+    };
   },
   close:function(){
     this.setState({ show: false });
@@ -797,45 +851,41 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
   handleConfirm: function() {
     var shop = {};
     var self = this;
-    shop.name = this.refs.name.getDOMNode().value.trim();
+    shop.name = this.refs.name.getValue().trim();
     if (!shop.name) {
       alert("店铺名字不能为空.");
       return;
     }
-    shop.title = this.refs.title.getDOMNode().value.trim();
+    shop.title = this.refs.title.getValue().trim();
     if (!shop.title) {
       alert("店铺简称不能为空.");
       return;
     }
-    shop.categoryName = this.refs.categoryName.getDOMNode().value.trim();
-    if (!shop.categoryName) {
-      alert("店铺分类不能为空.");
-      return;
-    }
-    shop.address = this.refs.address.getDOMNode().value.trim();
+    shop.categoryId = this.refs.categoryId.getValue().trim();
+    shop.address = this.refs.address.getValue().trim();
     if (!shop.address) {
       alert("店铺地址不能为空.");
       return;
     }
-    shop.area = this.refs.area.getDOMNode().value.trim();
+    shop.area = this.refs.area.getValue().trim();
     if (!shop.area) {
       alert("店铺区域不能为空.");
       return;
     }
-    shop.distrinct = this.refs.distrinct.getDOMNode().value.trim();
+    shop.distrinct = this.refs.distrinct.getValue().trim();
     if (!shop.distrinct) {
       alert("商圈不能为空.");
       return;
     }
-    shop.description = this.refs.description.getDOMNode().value.trim();
+    shop.description = this.refs.description.getValue().trim();
     if (!shop.description) {
       alert("店铺描述不能为空.");
       return;
     }
-    var uri = this.props.key ? "/api/shops/" + this.props.key: "/api/shops/";
-    var msgPart = old_shop.id ? '修改': '添加';
+    var old_shop = this.props.shop || {};
+    var uri = old_shop.objectId ? "/api/shops/" + old_shop.objectId: "/api/shops/";
+    var msgPart = old_shop.objectId ? '修改': '添加';
     $.post(uri, shop, function(data) {
-    $('#shop-form').modal('hide');
       console.log(data);
       alert(msgPart + '商家成功！');
       self.close();
@@ -843,9 +893,15 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
       alert(msgPart + '商家失败！');
     });
   },
+  componentDidMount: function() {
+  },
   render: function() {
     var shop = this.props.shop || {};
-    var titlePart = this.props.key? '编辑' : '新增';
+    var titlePart = shop.objectId? '编辑' : '新增';
+    var categories = this.props.categories.map(function(category) {
+       return React.createElement("option", {value: category.objectId}, " ", category.name, " ")
+    });
+
     return (
       React.createElement("div", null, 
        React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
@@ -855,34 +911,85 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
          ), 
          React.createElement(Modal.Body, null, 
            React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺名字"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid", value: shop.name}))
+             React.createElement(Input, {
+                    ref: "name", 
+                    type: "text", 
+                    value: shop.name, 
+                    label: "店铺名字", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "title", 
+                    type: "text", 
+                    value: shop.title, 
+                    label: "店铺简称", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "categoryId", 
+                    type: "select", 
+                    value: shop.categoryId, 
+                    label: "店铺分类", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""
+                    
+                    }, 
+               categories
              ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺简称"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "title", type: "text", className: "form-control valid", value: shop.title}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺分类"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "categoryName", type: "text", className: "form-control valid", value: shop.categoryName}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺地址"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid", value: shop.address}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺区域"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "area", type: "text", className: "form-control valid", value: shop.area}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "商圈"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "distrinct", type: "text", className: "form-control valid", value: shop.distrinct}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "店铺描述"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "description", type: "text", className: "form-control valid", value: shop.description}))
-             )
+             React.createElement(Input, {
+                    ref: "address", 
+                    type: "text", 
+                    value: shop.address, 
+                    label: "店铺地址", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "area", 
+                    type: "text", 
+                    value: shop.area, 
+                    label: "店铺区域", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "distrinct", 
+                    type: "text", 
+                    value: shop.distrinct, 
+                    label: "商圈", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "description", 
+                    type: "text", 
+                    value: shop.description, 
+                    label: "店铺描述", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    )
            )
          ), 
          React.createElement(Modal.Footer, null, 
@@ -897,7 +1004,9 @@ var ShopModal = exports.ShopModal= React.createClass({displayName: "ShopModal",
 
 var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal",
   getInitialState:function() {
-    return {show: false};
+    return {
+      show: false,
+    };
   },
   close:function(){
     this.setState({ show: false });
@@ -910,20 +1019,20 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
   handleConfirm: function() {
     var order = {};
     var self = this;
-    order.userId = this.refs.userId.getDOMNode().value.trim();
-    order.cost = this.refs.cost.getDOMNode().value.trim();
-    order.status = this.refs.status.getDOMNode().value.trim();
-    order.payMethod = this.refs.payMethod.getDOMNode().value.trim();
-    order.useMethod = this.refs.useMethod.getDOMNode().value.trim();
-    order.voucherId = this.refs.voucherId.getDOMNode().value.trim();
-    order.voucherMoney = this.refs.voucherMoney.getDOMNode().value.trim();
-    order.address = this.refs.address.getDOMNode().value.trim();
-    order.alipaySN = this.refs.alipaySN.getDOMNode().value.trim();
-    order.wechatSN = this.refs.wechatSN.getDOMNode().value.trim();
-    var uri = this.props.key ? "/api/orders/" + this.props.key: "/api/orders/";
-    var msgPart = old_order.id ? '修改': '添加';
+    order.userId = this.refs.userId.getValue().trim();
+    order.cost = this.refs.cost.getValue().trim();
+    order.status = this.refs.status.getValue().trim();
+    order.payMethod = this.refs.payMethod.getValue().trim();
+    order.useMethod = this.refs.useMethod.getValue().trim();
+    order.voucherId = this.refs.voucherId.getValue().trim();
+    order.voucherMoney = this.refs.voucherMoney.getValue().trim();
+    order.address = this.refs.address.getValue().trim();
+    order.alipaySN = this.refs.alipaySN.getValue().trim();
+    order.wechatSN = this.refs.wechatSN.getValue().trim();
+    var old_order = this.props.order || {};
+    var uri = old_order.objectId ? "/api/orders/" + old_order.objectId: "/api/orders/";
+    var msgPart = old_order.objectId ? '修改': '添加';
     $.post(uri, order, function(data) {
-    $('#order-form').modal('hide');
       console.log(data);
       alert(msgPart + '订单成功！');
       self.close();
@@ -931,9 +1040,12 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
       alert(msgPart + '订单失败！');
     });
   },
+  componentDidMount: function() {
+  },
   render: function() {
     var order = this.props.order || {};
-    var titlePart = this.props.key? '编辑' : '新增';
+    var titlePart = order.objectId? '编辑' : '新增';
+
     return (
       React.createElement("div", null, 
        React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
@@ -943,46 +1055,116 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
          ), 
          React.createElement(Modal.Body, null, 
            React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "用户ID"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "userId", type: "text", className: "form-control valid", value: order.userId}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "总额"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "cost", type: "text", className: "form-control valid", value: order.cost}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "订单状态"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "status", type: "text", className: "form-control valid", value: order.status}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "支付方式"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "payMethod", type: "text", className: "form-control valid", value: order.payMethod}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "消费方式"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "useMethod", type: "text", className: "form-control valid", value: order.useMethod}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "代金劵ID"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherId", type: "text", className: "form-control valid", value: order.voucherId}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "代金券金额"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "voucherMoney", type: "text", className: "form-control valid", value: order.voucherMoney}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "地址"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "address", type: "text", className: "form-control valid", value: order.address}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "支付宝订单号"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "alipaySN", type: "text", className: "form-control valid", value: order.alipaySN}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "微信订单号"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "wechatSN", type: "text", className: "form-control valid", value: order.wechatSN}))
-             )
+             React.createElement(Input, {
+                    ref: "userId", 
+                    type: "text", 
+                    value: order.userId, 
+                    label: "用户ID", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "cost", 
+                    type: "text", 
+                    value: order.cost, 
+                    label: "总额", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "status", 
+                    type: "text", 
+                    value: order.status, 
+                    label: "订单状态", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "payMethod", 
+                    type: "text", 
+                    value: order.payMethod, 
+                    label: "支付方式", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "useMethod", 
+                    type: "text", 
+                    value: order.useMethod, 
+                    label: "消费方式", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "voucherId", 
+                    type: "text", 
+                    value: order.voucherId, 
+                    label: "代金劵ID", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "voucherMoney", 
+                    type: "text", 
+                    value: order.voucherMoney, 
+                    label: "代金券金额", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "address", 
+                    type: "text", 
+                    value: order.address, 
+                    label: "地址", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "alipaySN", 
+                    type: "text", 
+                    value: order.alipaySN, 
+                    label: "支付宝订单号", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "wechatSN", 
+                    type: "text", 
+                    value: order.wechatSN, 
+                    label: "微信订单号", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    )
            )
          ), 
          React.createElement(Modal.Footer, null, 
@@ -997,7 +1179,9 @@ var OrderModal = exports.OrderModal= React.createClass({displayName: "OrderModal
 
 var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
   getInitialState:function() {
-    return {show: false};
+    return {
+      show: false,
+    };
   },
   close:function(){
     this.setState({ show: false });
@@ -1010,15 +1194,15 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
   handleConfirm: function() {
     var user = {};
     var self = this;
-    user.username = this.refs.username.getDOMNode().value.trim();
+    user.username = this.refs.username.getValue().trim();
     if (!user.username) {
       alert("用户名不能为空.");
       return;
     }
-    var uri = this.props.key ? "/api/users/" + this.props.key: "/api/users/";
-    var msgPart = old_user.id ? '修改': '添加';
+    var old_user = this.props.user || {};
+    var uri = old_user.objectId ? "/api/users/" + old_user.objectId: "/api/users/";
+    var msgPart = old_user.objectId ? '修改': '添加';
     $.post(uri, user, function(data) {
-    $('#user-form').modal('hide');
       console.log(data);
       alert(msgPart + '用户成功！');
       self.close();
@@ -1026,9 +1210,12 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
       alert(msgPart + '用户失败！');
     });
   },
+  componentDidMount: function() {
+  },
   render: function() {
     var user = this.props.user || {};
-    var titlePart = this.props.key? '编辑' : '新增';
+    var titlePart = user.objectId? '编辑' : '新增';
+
     return (
       React.createElement("div", null, 
        React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
@@ -1038,10 +1225,17 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
          ), 
          React.createElement(Modal.Body, null, 
            React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "用户名"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "username", type: "text", className: "form-control valid", value: user.username}))
-             )
+             React.createElement(Input, {
+                    ref: "username", 
+                    type: "text", 
+                    value: user.username, 
+                    label: "用户名", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    )
            )
          ), 
          React.createElement(Modal.Footer, null, 
@@ -1056,7 +1250,9 @@ var UserModal = exports.UserModal= React.createClass({displayName: "UserModal",
 
 var CategoryModal = exports.CategoryModal= React.createClass({displayName: "CategoryModal",
   getInitialState:function() {
-    return {show: false};
+    return {
+      show: false,
+    };
   },
   close:function(){
     this.setState({ show: false });
@@ -1069,15 +1265,15 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
   handleConfirm: function() {
     var category = {};
     var self = this;
-    category.name = this.refs.name.getDOMNode().value.trim();
+    category.name = this.refs.name.getValue().trim();
     if (!category.name) {
       alert("分类不能为空.");
       return;
     }
-    var uri = this.props.key ? "/api/categories/" + this.props.key: "/api/categories/";
-    var msgPart = old_category.id ? '修改': '添加';
+    var old_category = this.props.category || {};
+    var uri = old_category.objectId ? "/api/categories/" + old_category.objectId: "/api/categories/";
+    var msgPart = old_category.objectId ? '修改': '添加';
     $.post(uri, category, function(data) {
-    $('#category-form').modal('hide');
       console.log(data);
       alert(msgPart + '分类成功！');
       self.close();
@@ -1085,9 +1281,12 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
       alert(msgPart + '分类失败！');
     });
   },
+  componentDidMount: function() {
+  },
   render: function() {
     var category = this.props.category || {};
-    var titlePart = this.props.key? '编辑' : '新增';
+    var titlePart = category.objectId? '编辑' : '新增';
+
     return (
       React.createElement("div", null, 
        React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
@@ -1097,10 +1296,17 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
          ), 
          React.createElement(Modal.Body, null, 
            React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "分类"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "name", type: "text", className: "form-control valid", value: category.name}))
-             )
+             React.createElement(Input, {
+                    ref: "name", 
+                    type: "text", 
+                    value: category.name, 
+                    label: "分类", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    )
            )
          ), 
          React.createElement(Modal.Footer, null, 
@@ -1115,7 +1321,9 @@ var CategoryModal = exports.CategoryModal= React.createClass({displayName: "Cate
 
 var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigModal",
   getInitialState:function() {
-    return {show: false};
+    return {
+      show: false,
+    };
   },
   close:function(){
     this.setState({ show: false });
@@ -1128,20 +1336,20 @@ var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigMo
   handleConfirm: function() {
     var config = {};
     var self = this;
-    config.key = this.refs.key.getDOMNode().value.trim();
+    config.key = this.refs.key.getValue().trim();
     if (!config.key) {
       alert("key不能为空.");
       return;
     }
-    config.value = this.refs.value.getDOMNode().value.trim();
+    config.value = this.refs.value.getValue().trim();
     if (!config.value) {
       alert("value不能为空.");
       return;
     }
-    var uri = this.props.key ? "/api/configs/" + this.props.key: "/api/configs/";
-    var msgPart = old_config.id ? '修改': '添加';
+    var old_config = this.props.config || {};
+    var uri = old_config.objectId ? "/api/configs/" + old_config.objectId: "/api/configs/";
+    var msgPart = old_config.objectId ? '修改': '添加';
     $.post(uri, config, function(data) {
-    $('#config-form').modal('hide');
       console.log(data);
       alert(msgPart + '配置成功！');
       self.close();
@@ -1149,9 +1357,12 @@ var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigMo
       alert(msgPart + '配置失败！');
     });
   },
+  componentDidMount: function() {
+  },
   render: function() {
     var config = this.props.config || {};
-    var titlePart = this.props.key? '编辑' : '新增';
+    var titlePart = config.objectId? '编辑' : '新增';
+
     return (
       React.createElement("div", null, 
        React.createElement("button", {className: this.props.btnStyle, onClick: this.open}, " ", this.props.btnName, " "), 
@@ -1161,14 +1372,28 @@ var ConfigModal = exports.ConfigModal= React.createClass({displayName: "ConfigMo
          ), 
          React.createElement(Modal.Body, null, 
            React.createElement("form", {className: "form-horizontal cmxform tasi-form"}, 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "key"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "key", type: "text", className: "form-control valid", value: config.key}))
-             ), 
-             React.createElement("div", {className: "form-group"}, 
-               React.createElement("label", {className: "control-label col-lg-3"}, "value"), 
-               React.createElement("div", {className: "col-lg-4"}, React.createElement("input", {ref: "value", type: "text", className: "form-control valid", value: config.value}))
-             )
+             React.createElement(Input, {
+                    ref: "key", 
+                    type: "text", 
+                    value: config.key, 
+                    label: "key", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    ), 
+             React.createElement(Input, {
+                    ref: "value", 
+                    type: "text", 
+                    value: config.value, 
+                    label: "value", 
+                    labelClassName: "col-lg-3", 
+                    className: "valid", 
+                    wrapperClassName: "col-lg-4", 
+                    placeholder: ""}
+                    
+                    )
            )
          ), 
          React.createElement(Modal.Footer, null, 
